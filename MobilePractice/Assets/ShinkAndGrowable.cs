@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ShinkAndGrowable : MonoBehaviour {
 
-    public float sizeChangeFrequency = 10f;
+    public float sizeChangeFrequency = 7f;
     public float shrinkSpeed, growSpeed;
-    private bool shrinking = true;
-    private bool growing = false;
+    private bool shrinking = false;
+    private bool growing = true;
     private Vector3 origSize;
 
 	// Use this for initialization

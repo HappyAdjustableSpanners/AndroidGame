@@ -5,14 +5,10 @@ using UnityEngine;
 public class PlayerEat : MonoBehaviour {
 
     private bool eating = false;
-    private bool growing = false;
     private GameObject obj;
     private int origSortingOrder;
-    private float eatSpeed;
-    private float growSize;
 
     public float growSpeed = 3f;
-    private float growAmount = 1.5f;
 
     private ScoreManager scoreManager;
 
@@ -20,15 +16,18 @@ public class PlayerEat : MonoBehaviour {
 
     private PlayerBehaviours playerController;
 
+    private JoystickControlled playerMove;
+
+    public bool upScore = false;
+
     // Use this for initialization
     void Start()
     {
         origSortingOrder = GetComponent<Renderer>().sortingOrder;
-        eatSpeed = GetComponent<wander>().GetMoveSpeed() * 3;
-
         scoreManager = GameObject.FindGameObjectWithTag("ScoreManager").GetComponent<ScoreManager>();
         audioSource = GetComponent<AudioSource>();
         playerController = GetComponent<PlayerBehaviours>();
+        playerMove = GetComponent<JoystickControlled>();
     }
 
     // Update is called once per frame
@@ -46,7 +45,7 @@ public class PlayerEat : MonoBehaviour {
                 }
 
                 //Lerp towards target center
-                transform.position = Vector3.Lerp(transform.position, obj.transform.position, Time.deltaTime * eatSpeed);
+                transform.position = Vector3.Lerp(transform.position, obj.transform.position, Time.deltaTime * 3f);
 
                 //Look at
                 Vector3 dir = obj.transform.position - transform.position;
@@ -57,14 +56,15 @@ public class PlayerEat : MonoBehaviour {
                 if (MathFunctions.IsOverlapping(gameObject.GetComponent<CircleCollider2D>(), obj.GetComponent<CircleCollider2D>(), 0.2f))
                 {
                     //Is overlapping
-                    transform.position = Vector3.MoveTowards(transform.position, obj.transform.position, Time.deltaTime * eatSpeed);
+                    transform.position = Vector3.MoveTowards(transform.position, obj.transform.position, Time.deltaTime * 3f);
 
                     if (MathFunctions.IsOverlapping(gameObject.GetComponent<CircleCollider2D>(), obj.GetComponent<CircleCollider2D>(), 0))
                     {
                         if (obj.tag.Contains("Poison"))
                         {
                             //Destroy ourselves
-                            DestroyObj(gameObject);
+                            StartCoroutine("FreezeTimed");
+                            Destroy(obj);
                         }
                         else
                         {
@@ -80,14 +80,18 @@ public class PlayerEat : MonoBehaviour {
 
                             //Finish eating
                             SetFinishedEating();
-
-
                         }
                     }
                 }
             }
             else
                 SetFinishedEating();
+        }
+
+        if(upScore == true)
+        {
+            scoreManager.IncrementScore(10);
+            upScore = false;
         }
     }
 
@@ -105,6 +109,14 @@ public class PlayerEat : MonoBehaviour {
 
         //Destroy parent (this will no longer destroy trail)
         Destroy(objToDestroy);
+    }
+
+    private IEnumerator FreezeTimed()
+    {
+        float origMoveSpeed = playerMove.GetMoveSpeed();
+        playerMove.SetMoveSpeed(0f);
+        yield return new WaitForSeconds(3f);
+        playerMove.SetMoveSpeed(origMoveSpeed);
     }
 
 

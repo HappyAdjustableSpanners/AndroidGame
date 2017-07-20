@@ -42,7 +42,5 @@ public class PlayerBehaviours : MonoBehaviour {
         mainModule.startSizeXMultiplier = size;
         mainModule.startSizeYMultiplier = size;
         mainModule.startSizeZMultiplier = size;                                                                                                                                                                                                                                                                                                                                                                                
-
-        ps.startLifetime = size + 1;
     }
 }

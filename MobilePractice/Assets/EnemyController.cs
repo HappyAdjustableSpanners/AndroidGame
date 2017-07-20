@@ -61,6 +61,5 @@ public class EnemyController : MonoBehaviour {
         mainModule.startSizeXMultiplier = transform.localScale.x;
         mainModule.startSizeYMultiplier = transform.localScale.y;
         mainModule.startSizeZMultiplier = transform.localScale.z;
-        ps.startLifetime = transform.localScale.x + 1;
     }
 }

@@ -11,6 +11,8 @@ public class JoystickControlled : MonoBehaviour {
     private Rigidbody2D rb;
     private Vector2 dir;
 
+    public CircleCollider2D map;
+
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody2D>();
@@ -23,6 +25,9 @@ public class JoystickControlled : MonoBehaviour {
         //Get joystick input
         dir.x = joystick.Horizontal();
         dir.y = joystick.Vertical();
+
+        //We want the movement speed to stay the same (relatively) as the player increases in size
+        moveSpeed  = (map.bounds.extents.x - -map.bounds.extents.x) * 2;
 
         //Set velocity based on input vector and move speed
         rb.velocity = dir * Time.deltaTime * moveSpeed;
@@ -39,5 +44,10 @@ public class JoystickControlled : MonoBehaviour {
     public float GetMoveSpeed()
     {
         return moveSpeed;
+    }
+
+    public void SetMoveSpeed(float value)
+    {
+        moveSpeed = value;
     }
 }

@@ -14,11 +14,11 @@ public class Eater : MonoBehaviour {
     private float growSize;
 
     public float growSpeed = 1f;
-    private float growAmount = 1f;
 
     private AudioSource audioSource;
     private Rigidbody2D rb;
     private wander wander;
+    private GameObject player;
     
 
 	// Use this for initialization
@@ -29,6 +29,7 @@ public class Eater : MonoBehaviour {
         audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody2D>();
         wander = GetComponent<wander>();
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
@@ -60,7 +61,8 @@ public class Eater : MonoBehaviour {
                     if (obj.tag.Contains("Poison"))
                     {
                         //Destroy ourselves
-                        DestroyObj(gameObject);
+                        StartCoroutine("FreezeTimed");
+                        Destroy(obj);
                     }
                     else
                     {
@@ -86,7 +88,13 @@ public class Eater : MonoBehaviour {
 
         if (growing)
         {
-            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(growSize, growSize, 1f), Time.deltaTime * growSpeed);
+            if (player != null)
+            {
+                if (transform.localScale.x < player.transform.localScale.x * 5f)
+                {
+                    transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(growSize, growSize, 1f), Time.deltaTime * growSpeed);
+                }
+            }
         }
     }
 
@@ -162,11 +170,19 @@ public class Eater : MonoBehaviour {
     private IEnumerator GrowTimed()
     {
         growing = true;
-        growSize = transform.localScale.x + obj.transform.localScale.x * growAmount;
+        growSize = transform.localScale.x + obj.transform.localScale.x / 2;
         yield return new WaitForSeconds(1f);
         growing = false;
         enemyController.ScaleAudioSourceDistances();
         enemyController.ScaleParticleSystemTrailLength();
+    }
+
+    private IEnumerator FreezeTimed()
+    {
+        float origMoveSpeed = wander.GetMoveSpeed();
+        wander.SetMoveSpeed(0f);
+        yield return new WaitForSeconds(3f);
+        wander.SetMoveSpeed(origMoveSpeed);
     }
 
     private void DestroyObj(GameObject objToDestroy)

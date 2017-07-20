@@ -96,6 +96,7 @@
     <Compile Include="Assets\GameManager.cs" />
     <Compile Include="Assets\JoystickControlled.cs" />
     <Compile Include="Assets\MathFunctions.cs" />
+    <Compile Include="Assets\MusicBehaviour.cs" />
     <Compile Include="Assets\OuterDeathLimit.cs" />
     <Compile Include="Assets\ParticleSystemSettings.cs" />
     <Compile Include="Assets\PickUpKill.cs" />
