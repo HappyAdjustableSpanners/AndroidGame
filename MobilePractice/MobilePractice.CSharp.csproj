@@ -84,34 +84,32 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Boostable.cs" />
-    <Compile Include="Assets\CameraBehaviour.cs" />
-    <Compile Include="Assets\DestroyOnContact.cs" />
-    <Compile Include="Assets\DestroyOnContact3D.cs" />
-    <Compile Include="Assets\Dropper.cs" />
-    <Compile Include="Assets\Eater.cs" />
-    <Compile Include="Assets\EnemyController.cs" />
-    <Compile Include="Assets\EventManager.cs" />
-    <Compile Include="Assets\Follow.cs" />
-    <Compile Include="Assets\GameManager.cs" />
-    <Compile Include="Assets\JoystickControlled.cs" />
-    <Compile Include="Assets\MathFunctions.cs" />
-    <Compile Include="Assets\MusicBehaviour.cs" />
-    <Compile Include="Assets\OuterDeathLimit.cs" />
-    <Compile Include="Assets\ParticleSystemSettings.cs" />
-    <Compile Include="Assets\PickUpKill.cs" />
-    <Compile Include="Assets\PlayerBehaviours.cs" />
-    <Compile Include="Assets\PlayerHighScore.cs" />
-    <Compile Include="Assets\ScoreManager.cs" />
-    <Compile Include="Assets\Scripts\GameLevelBehaviours.cs" />
-    <Compile Include="Assets\Scripts\MenuScene.cs" />
-    <Compile Include="Assets\Scripts\MiniGestureRecognizer.cs" />
-    <Compile Include="Assets\Scripts\PlayerEat.cs" />
-    <Compile Include="Assets\Scripts\Preloader.cs" />
-    <Compile Include="Assets\ShinkAndGrowable.cs" />
-    <Compile Include="Assets\Spawner.cs" />
-    <Compile Include="Assets\VirtualJoystick.cs" />
-    <Compile Include="Assets\wander.cs" />
+    <Compile Include="Assets\GameLevelBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\Eater.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\EnemyController.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\Growable.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\ShinkAndGrowable.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\wander.cs" />
+    <Compile Include="Assets\Scripts\Camera\CameraBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Input\VirtualJoystick.cs" />
+    <Compile Include="Assets\Scripts\Libraries\MathFunctions.cs" />
+    <Compile Include="Assets\Scripts\Managers\EventManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\ScoreManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\Spawner.cs" />
+    <Compile Include="Assets\Scripts\Menu\MenuScene.cs" />
+    <Compile Include="Assets\Scripts\Menu\MiniGestureRecognizer.cs" />
+    <Compile Include="Assets\Scripts\Menu\MusicBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Menu\PlayerHighScore.cs" />
+    <Compile Include="Assets\Scripts\Menu\Preloader.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerBehaviours.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerEat.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerGrow.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerMoveJoystick.cs" />
+    <Compile Include="Assets\Scripts\Reusable\DestroyOnContact.cs" />
+    <Compile Include="Assets\Scripts\Reusable\Follow.cs" />
+    <Compile Include="Assets\Scripts\SpecialEnemyBehaviours\Boostable.cs" />
+    <Compile Include="Assets\Scripts\SpecialEnemyBehaviours\Dropper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fonts\luckiest-guy\LICENSE.txt" />
