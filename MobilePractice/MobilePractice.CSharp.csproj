@@ -88,6 +88,7 @@
     <Compile Include="Assets\Scripts\Behaviours\Eater.cs" />
     <Compile Include="Assets\Scripts\Behaviours\EnemyController.cs" />
     <Compile Include="Assets\Scripts\Behaviours\Growable.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\Pulse.cs" />
     <Compile Include="Assets\Scripts\Behaviours\ShinkAndGrowable.cs" />
     <Compile Include="Assets\Scripts\Behaviours\wander.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraBehaviour.cs" />

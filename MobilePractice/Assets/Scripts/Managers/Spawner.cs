@@ -26,9 +26,8 @@ public class Spawner : MonoBehaviour {
     //Spawn circle
     private CircleCollider2D spawnCircle;
 
-
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 
         //Can turn spawning on/off
         if (spawnEnemies)
@@ -72,7 +71,7 @@ public class Spawner : MonoBehaviour {
         if (player != null && objToSpawn != null)
         {
             //Set the spawn circle radius so we can visually see in the scene view the spawn area
-            spawnCircle.radius = player.transform.localScale.x * 20f;
+            //spawnCircle.radius = player.transform.localScale.x * 15;
 
             //Choose random move speed from min and max using player speed as reference. This means as the player scales up things stay consistent
             float playerMoveSpeed = player.GetComponent<PlayerMoveJoystick>().GetMoveSpeed();
@@ -98,6 +97,11 @@ public class Spawner : MonoBehaviour {
                 //Get spawn point in area of circle
                 spawnPos = Random.insideUnitCircle * (spawnCircle.radius * transform.parent.localScale.x);
                 size *= 5;
+
+                if (spawnPos.magnitude < 20)
+                {
+                    return;
+                }
             }
 
             //Make sure we spawn them on top of each other by doing an overlap circle
@@ -123,7 +127,7 @@ public class Spawner : MonoBehaviour {
         if (player != null && GameObject.FindGameObjectsWithTag("Background_Sprite").Length < 10 || spawnInArea)
         {
             //Set the spawn circle radius so we can visually see in the scene view the spawn area
-            spawnCircle.radius = player.transform.localScale.x * 20f;
+            //spawnCircle.radius = player.transform.localScale.x * 20f;
 
             //Choose random move speed from min and max using player speed as reference. This means as the player scales up things stay consistent
             float playerMoveSpeed = player.GetComponent<PlayerMoveJoystick>().GetMoveSpeed();
@@ -157,6 +161,7 @@ public class Spawner : MonoBehaviour {
                 GameObject obj = Instantiate(bgObjToSpawn[Random.Range(0, bgObjToSpawn.Length)], spawnPos, Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, Random.Range(0f, 360f))));
                 obj.transform.localScale = new Vector3(size, size, obj.transform.localScale.z);
                 obj.GetComponent<wander>().SetMoveSpeed(moveSpeed);
+                obj.GetComponent<wander>().SetTurnSpeed(0.1f);
                 obj.name = "EnemyBg" + spawnIDBackground;
 
                 //Choose a random color for the enemy
