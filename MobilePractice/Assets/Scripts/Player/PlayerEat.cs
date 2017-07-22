@@ -109,6 +109,9 @@ public class PlayerEat : MonoBehaviour {
         //Set eating to false, and restore the original sorting order for this sprite
         eating = false;
         GetComponent<Renderer>().sortingOrder = origSortingOrder;
+
+        //Set state back to moving
+        GetComponent<PlayerController>().setState("moving");
     }
 
     private void DestroyObj(GameObject objToDestroy)
@@ -156,6 +159,7 @@ public class PlayerEat : MonoBehaviour {
 
                 //Finally, set eating to true
                 eating = true;
+                GetComponent<PlayerController>().setState("eating");
             }           
         }
     }
@@ -201,5 +205,10 @@ public class PlayerEat : MonoBehaviour {
                 GetComponent<Renderer>().sortingOrder = col.gameObject.GetComponent<Renderer>().sortingOrder + 1;
             }
         }
+    }
+
+    public bool getEating()
+    {
+        return eating;
     }
 }

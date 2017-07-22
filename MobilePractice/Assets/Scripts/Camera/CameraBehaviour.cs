@@ -9,7 +9,6 @@ public class CameraBehaviour : MonoBehaviour {
     public float cameraFollowSpeed;
 
     public Camera mainCamera;
-
     private float orthoSize;
     public float cameraZoomSpeed = 2f;
 
@@ -28,7 +27,6 @@ public class CameraBehaviour : MonoBehaviour {
         if(!initialZoomDone)
         {
             Zoom(5f);
-            initialZoomDone = true;
         }
         FollowPlayer();
 	}
@@ -44,10 +42,22 @@ public class CameraBehaviour : MonoBehaviour {
         {
             GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, orthoSize, Time.deltaTime * cameraZoomSpeed);
         }
+        else
+        {
+            if(!initialZoomDone)
+            {
+                initialZoomDone = true;
+            }
+        }
     }
 
     public void Zoom(float size)
     {
         orthoSize = size;
+    }
+
+    public bool getInitialZoomDone()
+    {
+        return initialZoomDone;
     }
 }

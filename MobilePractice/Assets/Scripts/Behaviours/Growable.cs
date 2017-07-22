@@ -75,7 +75,7 @@ public class Growable : MonoBehaviour {
     public void ScaleAudioSourceDistances(float size)
     {
         audioSource.minDistance = size * 2f;
-        audioSource.maxDistance = size * 5f;
+        audioSource.maxDistance = size * 15f;
     }
 
     public void ScaleParticleSystemTrailLength(float size)

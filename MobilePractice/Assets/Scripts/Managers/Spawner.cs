@@ -104,7 +104,7 @@ public class Spawner : MonoBehaviour {
             if (NoOverlap(spawnPos, size, "Enemy"))
             {
                 //Instantiate obj, set its scale, speed and name
-                GameObject obj = Instantiate(objToSpawn[Random.Range(0, objToSpawn.Length - 1)], spawnPos, Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, Random.Range(0f, 360f))));
+                GameObject obj = Instantiate(objToSpawn[Random.Range(0, objToSpawn.Length)], spawnPos, Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, Random.Range(0f, 360f))));
                 obj.transform.localScale = new Vector3(size, size, obj.transform.localScale.z);
                 obj.GetComponent<wander>().SetMoveSpeed(moveSpeed);
                 obj.name = "Enemy" + spawnIDForeground;
@@ -120,7 +120,7 @@ public class Spawner : MonoBehaviour {
 
     private void SpawnBackground()
     {
-        if (player != null && GameObject.FindGameObjectsWithTag("Background_Sprite").Length < 10)
+        if (player != null && GameObject.FindGameObjectsWithTag("Background_Sprite").Length < 10 || spawnInArea)
         {
             //Set the spawn circle radius so we can visually see in the scene view the spawn area
             spawnCircle.radius = player.transform.localScale.x * 20f;
@@ -154,7 +154,7 @@ public class Spawner : MonoBehaviour {
             if (NoOverlap(spawnPos, size, "Background"))
             {
                 //Instantiate obj, set its scale, speed and name
-                GameObject obj = Instantiate(bgObjToSpawn[Random.Range(0, bgObjToSpawn.Length - 1)], spawnPos, Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, Random.Range(0f, 360f))));
+                GameObject obj = Instantiate(bgObjToSpawn[Random.Range(0, bgObjToSpawn.Length)], spawnPos, Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, Random.Range(0f, 360f))));
                 obj.transform.localScale = new Vector3(size, size, obj.transform.localScale.z);
                 obj.GetComponent<wander>().SetMoveSpeed(moveSpeed);
                 obj.name = "EnemyBg" + spawnIDBackground;
