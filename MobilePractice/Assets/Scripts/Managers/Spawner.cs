@@ -5,10 +5,8 @@ using UnityEngine;
 public class Spawner : MonoBehaviour {
 
 
-    public float spawnInterval;
-    public float backgroundSpawnInterval;
-    public bool spawnEnemies = false;
-    public bool spawnBackgroundEnemies = true;
+    public float spawnInterval, backgroundSpawnInterval, extraSpawnInterval;
+    public bool spawnEnemies, spawnBackgroundEnemies, spawnExtra = true;
     private bool spawnInArea = false;
 
     public int initialEnemies;
@@ -16,9 +14,10 @@ public class Spawner : MonoBehaviour {
     //Obj to spawn
     private GameObject[] objToSpawn = null;
     public GameObject[] bgObjToSpawn = new GameObject[4];
+    public GameObject[] extraObjToSpawn = new GameObject[1];
 
     //Spawn id of obj (unique identifier)
-    private int spawnIDForeground, spawnIDBackground = 0;
+    private int spawnIDForeground, spawnIDBackground, spawnIDExtra = 0;
 
     //Player
     private GameObject player;
@@ -38,6 +37,10 @@ public class Spawner : MonoBehaviour {
         if (spawnBackgroundEnemies)
         {
             InvokeRepeating("SpawnBackground", backgroundSpawnInterval, backgroundSpawnInterval);
+        }
+        if(spawnExtra)
+        {
+            InvokeRepeating("SpawnExtra", extraSpawnInterval, extraSpawnInterval);
         }
 
         //Get reference to player
@@ -61,6 +64,12 @@ public class Spawner : MonoBehaviour {
         {
             Spawn();
             SpawnBackground();
+
+            //Only spawn a third of these
+            if (i % 3 == 0)
+            {
+                SpawnExtra();
+            }
         }
         spawnInArea = false;
     }
@@ -176,6 +185,55 @@ public class Spawner : MonoBehaviour {
         }       
     }
 
+    private void SpawnExtra()
+    {
+        if (player != null && GameObject.FindGameObjectsWithTag("Extra").Length < 10 || spawnInArea)
+        {
+            //Choose random scale based on player size
+            float minSize = player.transform.localScale.x * 1.5f;
+            float maxSize = player.transform.localScale.x * 20f;
+            float size = Random.Range(minSize, maxSize);
+
+            //We have the option of spawning enemies anywhere in the circle (rather than on the circumferance) 
+            //We want to do this for the initial spawning of enemies
+            Vector2 spawnPos = Vector2.zero;
+            if (!spawnInArea)
+            {
+                //Get spawn pos on circumferance
+                spawnPos = new Vector2(player.transform.position.x, player.transform.position.y) + Random.insideUnitCircle.normalized * (spawnCircle.radius * transform.parent.localScale.x);
+            }
+            else
+            {
+                //Get spawn point in area of circle
+                spawnPos = Random.insideUnitCircle * (spawnCircle.radius * transform.parent.localScale.x);
+
+                if (spawnPos.magnitude < 20)
+                {
+                    return;
+                }
+            }
+
+            //Make sure we spawn them on top of each other by doing an overlap circle
+            if (NoOverlap(spawnPos, size, "Enemy") && NoOverlap(spawnPos, size, "Extra"))
+            {
+                //Instantiate obj, set its scale, speed and name
+                int index = Random.Range(0, extraObjToSpawn.Length);
+                GameObject obj = Instantiate(extraObjToSpawn[index], spawnPos, extraObjToSpawn[index].transform.rotation);
+
+                //obj.transform.rotation = Quaternion.Euler(new Vector3(180, obj.transform.rotation.eulerAngles.y, Random.Range(0f, 360f)));
+
+                obj.transform.localScale = new Vector3(size, size, size);
+                obj.name = "Extra" + spawnIDExtra;
+
+                //Just to neaten up inspector while running, hide all spawned enemies under the GameManager gameObject
+                obj.transform.parent = GameObject.Find("Extra").transform;
+
+                //Increment the spawn id
+                spawnIDExtra++;
+            }
+        }
+    }
+
     //Manually set the objects to spawn
     public void setObjsToSpawn(GameObject[] tempObjToSpawn)
     {
@@ -189,7 +247,7 @@ public class Spawner : MonoBehaviour {
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(spawnPos, size);
         foreach (Collider2D col in hitColliders)
         {
-            if (col.tag.Contains(tag))
+            if (col.tag.Contains(tag) || col.tag.Equals(tag))
             {
                 return false;
             }

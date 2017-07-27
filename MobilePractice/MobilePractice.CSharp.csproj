@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GameLevelBehaviour.cs" />
+    <Compile Include="Assets\HidePlayerOnCollision.cs" />
     <Compile Include="Assets\Scripts\Behaviours\Eater.cs" />
     <Compile Include="Assets\Scripts\Behaviours\EnemyController.cs" />
     <Compile Include="Assets\Scripts\Behaviours\Growable.cs" />

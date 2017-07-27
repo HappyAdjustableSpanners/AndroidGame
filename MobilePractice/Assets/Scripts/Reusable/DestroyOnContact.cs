@@ -12,7 +12,7 @@ public class DestroyOnContact : MonoBehaviour {
         {
             if (col.CompareTag(s) || col.tag.Contains(s))
             {
-                Destroy(col.gameObject);
+                Destroy(col.gameObject);               
             }
         }
     }

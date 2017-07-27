@@ -18,12 +18,12 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (state == State.eating)
-        {
-            playerMove.SetAllowMovement(false);
-        }
-        else
-            playerMove.SetAllowMovement(true);
+        //if (state == State.eating)
+        //{
+        //    playerMove.SetAllowMovement(false);
+        //}
+        //else
+        //    playerMove.SetAllowMovement(true);
 	}
 
     public void setState(string value)

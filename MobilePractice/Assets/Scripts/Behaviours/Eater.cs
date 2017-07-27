@@ -211,4 +211,9 @@ public class Eater : MonoBehaviour {
             }
         }
     }
+
+    public CircleCollider2D GetCollider2D()
+    {
+        return GetComponent<CircleCollider2D>();
+    }
 }

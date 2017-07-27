@@ -52,12 +52,16 @@ public class PlayerEat : MonoBehaviour {
             }
            
             //Lerp towards prey
-            transform.position = Vector3.Lerp(transform.position, obj.transform.position, Time.deltaTime * 3f);
+            //transform.position = Vector3.Lerp(transform.position, obj.transform.position, Time.deltaTime * 3f);
 
-            //Turn to look at prey while we move towards it
-            Vector3 dir = obj.transform.position - transform.position;
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
+            
+            //if (MathFunctions.IsOverlapping(gameObject.GetComponent<CircleCollider2D>(), obj.GetComponent<CircleCollider2D>(), 0.5f))
+            //{
+            //    //Turn to look at prey while we move towards it
+            //    Vector3 dir = obj.transform.position - transform.position;
+            //    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            //    transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
+            //}
 
             //Check if we have almost overlapped / engulfed prey
             //Lerp slows down as we near the target (meaning it looks super smooth and nice). However, this can result in the eater never fully reaching and engulfing the prey.
