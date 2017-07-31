@@ -29,8 +29,8 @@ public class PlayerGrow : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         //Initially scale elements
-        ScaleAudioSourceDistances(transform.localScale.x);
-        ScaleParticleSystemTrailLength(transform.localScale.x);
+        ScaleAudioSourceDistances(transform.localScale.x * 3f);
+        ScaleParticleSystemTrailLength(transform.localScale.x * 5f);
 
     }
 
@@ -62,9 +62,8 @@ public class PlayerGrow : MonoBehaviour
         growing = false;
 
         //Scale elements
-        GameObject.FindGameObjectWithTag("GameLevel").transform.localScale = new Vector3(newSize * 2, newSize * 2, 1f);
-        ScaleAudioSourceDistances(transform.localScale.x);
-        ScaleParticleSystemTrailLength(transform.localScale.x);
+        ScaleAudioSourceDistances(transform.localScale.x * 3f);
+        ScaleParticleSystemTrailLength(transform.localScale.x * 5f);
     }
 
     public void ScaleAudioSourceDistances(float size)

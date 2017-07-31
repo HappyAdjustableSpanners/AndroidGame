@@ -12,21 +12,21 @@ public class CameraBehaviour : MonoBehaviour {
     private float orthoSize;
     public float cameraZoomSpeed = 2f;
 
-    private bool initialZoomDone = false;
+    private bool initialZoomStarted, initialZoomFinished = false;
 
 	// Use this for initialization
 	void Start () {
         player = GameObject.FindGameObjectWithTag("Player");
         mainCamera = GetComponent<Camera>();
         orthoSize = mainCamera.orthographicSize;
-	}
+    }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 
-        if(!initialZoomDone)
+        if(!initialZoomStarted)
         {
-            Zoom(5f);
+            Zoom(6f);
         }
         FollowPlayer();
 	}
@@ -42,22 +42,25 @@ public class CameraBehaviour : MonoBehaviour {
         {
             GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, orthoSize, Time.deltaTime * cameraZoomSpeed);
         }
-        else
+        else if(initialZoomStarted)
         {
-            if(!initialZoomDone)
-            {
-                initialZoomDone = true;
-            }
+            initialZoomFinished = true;
         }
     }
 
     public void Zoom(float size)
     {
         orthoSize = size;
+
+        EventManager.OnOrthoSizeChanged(orthoSize);
+        if (!initialZoomStarted)
+        {
+            initialZoomStarted = true;
+        }
     }
 
     public bool getInitialZoomDone()
     {
-        return initialZoomDone;
+        return initialZoomFinished;
     }
 }

@@ -43,6 +43,52 @@ public class MathFunctions : MonoBehaviour
         else
             return false;
     }
+    
+    public static bool CheckColorEqual(Color c1, Color c2)
+    {
+        if (Mathf.Abs(c1.r - c2.r) < 0.1f
+        && Mathf.Abs(c1.g - c2.g) < 0.1f
+        && Mathf.Abs(c1.b - c2.b) < 0.1f)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public static Vector2 FindRandomPointOnRectanglePerimeter(BoxCollider2D rect)
+    {
+        //Choose rand between 1 and 4
+        float rand = Random.Range(1, 5);
+
+        Vector2 point = Vector2.zero;
+        if(rand == 1)
+        {
+            //Top edge
+            float y = rect.bounds.min.y;
+            point = new Vector2(Random.Range(rect.bounds.min.x, rect.bounds.max.x), y);     
+        }
+        else if(rand == 2)
+        {
+            //Bottom edge
+            float y = rect.bounds.max.y;
+            point = new Vector2(Random.Range(rect.bounds.min.x, rect.bounds.max.x), y);
+        }
+        else if(rand == 3)
+        {
+            //Left
+            float x = rect.bounds.min.x;
+            point = new Vector2(x, Random.Range(rect.bounds.min.y, rect.bounds.max.y));
+        }
+        else if(rand == 4)
+        {
+            //Right
+            float x = rect.bounds.max.x;
+            point = new Vector2(x, Random.Range(rect.bounds.min.y, rect.bounds.max.y));
+        }
+
+        return point;
+    }
 
    
 }

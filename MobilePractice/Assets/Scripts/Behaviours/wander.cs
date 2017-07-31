@@ -51,7 +51,7 @@ public class wander : MonoBehaviour {
     private void ChooseNewRotation()
     {
         //Pick a angle within 90 degrees of the current z axis 
-        targetRot = Random.Range(rb.rotation - 45f, rb.rotation + 45f);
+        targetRot = Random.Range(rb.rotation - 180, rb.rotation + 180f);
     }
 
     public void SetWandering(bool value)

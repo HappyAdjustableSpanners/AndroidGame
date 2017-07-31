@@ -35,7 +35,6 @@ public class PlayerBehaviours : MonoBehaviour {
         newSize = transform.localScale.x * 2f;
 
         //Scale elements
-        GameObject.FindGameObjectWithTag("GameLevel").transform.localScale = new Vector3(newSize * 2, newSize * 2, 1f);
         ScaleAudioSourceDistances();
         ScaleParticleSystemTrailLength(newSize);
 

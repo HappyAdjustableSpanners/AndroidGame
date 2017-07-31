@@ -149,6 +149,12 @@ public class PlayerEat : MonoBehaviour {
 
     private void OnTriggerStay2D(Collider2D col)
     {
+        if(!eating && obj != null)
+        {
+            //if we are not eating, but we have prey, this is always a bug, and we can put in a bodge fix here
+            obj = null;
+        }
+
         //If we don't current have prey, and we have collided with prey, and we are not eating
         if (col.tag.Contains("Enemy") && obj == null && !eating)
         {

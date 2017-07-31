@@ -33,8 +33,8 @@ public class Growable : MonoBehaviour {
         audioSource = GetComponent<AudioSource>();
 
         //Initially scale elements
-        ScaleAudioSourceDistances(transform.localScale.x);
-        ScaleParticleSystemTrailLength(transform.localScale.x * 3);
+        ScaleAudioSourceDistances(transform.localScale.x * 3);
+        ScaleParticleSystemTrailLength(transform.localScale.x * 5);
         
     }
 	
@@ -68,8 +68,8 @@ public class Growable : MonoBehaviour {
         growing = true;
         yield return new WaitForSeconds(1f);
         growing = false;
-        ScaleAudioSourceDistances(transform.localScale.x);
-        ScaleParticleSystemTrailLength(transform.localScale.x * 3);
+        ScaleAudioSourceDistances(transform.localScale.x * 3);
+        ScaleParticleSystemTrailLength(transform.localScale.x * 5);
     }
 
     public void ScaleAudioSourceDistances(float size)
@@ -83,6 +83,6 @@ public class Growable : MonoBehaviour {
         var mainModule = ps.main;
         mainModule.startSizeXMultiplier = size;
         mainModule.startSizeYMultiplier = size;
-        mainModule.startSizeZMultiplier = 1f;
+        mainModule.startSizeZMultiplier = size;
     }
 }

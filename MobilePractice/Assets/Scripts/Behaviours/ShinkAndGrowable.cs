@@ -6,6 +6,7 @@ public class ShinkAndGrowable : MonoBehaviour {
 
     public float sizeChangeFrequency = 7f;
     public float shrinkSpeed, growSpeed;
+    public float growFactor = 2f;
     private bool shrinking = false;
     private bool growing = true;
     private Vector3 origSize;
@@ -20,11 +21,11 @@ public class ShinkAndGrowable : MonoBehaviour {
 	void Update () {
         if (shrinking)
         {
-            transform.localScale = Vector3.Lerp(transform.localScale, origSize / 2, Time.deltaTime * shrinkSpeed);
+            transform.localScale = Vector3.Lerp(transform.localScale, origSize / growFactor, Time.deltaTime * shrinkSpeed);
         }
         else if(growing)
         {
-            transform.localScale = Vector3.Lerp(transform.localScale, origSize * 2, Time.deltaTime * shrinkSpeed);
+            transform.localScale = Vector3.Lerp(transform.localScale, origSize * growFactor, Time.deltaTime * shrinkSpeed);
         }
     }
     void ShrinkAndGrow()

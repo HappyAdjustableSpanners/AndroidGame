@@ -79,6 +79,9 @@ public class Eater : MonoBehaviour {
                     float newSize = transform.localScale.x + obj.transform.localScale.x / 2;
                     growable.Grow(newSize);
 
+                    //Set new turn speed 
+                    wander.SetTurnSpeed(0.2f / newSize);
+
                     //Else, we destroy our prey obj
                     DestroyObj(obj);
 

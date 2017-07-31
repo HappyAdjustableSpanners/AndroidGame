@@ -6,15 +6,16 @@ public class Spawner : MonoBehaviour {
 
 
     public float spawnInterval, backgroundSpawnInterval, extraSpawnInterval;
-    public bool spawnEnemies, spawnBackgroundEnemies, spawnExtra = true;
+    public bool spawnEnemies, spawnBackgroundEnemies, spawnPlankton = true;
     private bool spawnInArea = false;
 
-    public int initialEnemies;
+    //Number of initial enemies (that get culled by zoom-in)
+    public int numInitialEnemies;
 
     //Obj to spawn
     private GameObject[] objToSpawn = null;
     public GameObject[] bgObjToSpawn = new GameObject[4];
-    public GameObject[] extraObjToSpawn = new GameObject[1];
+    public GameObject[] planktonObjToSpawn = new GameObject[1];
 
     //Spawn id of obj (unique identifier)
     private int spawnIDForeground, spawnIDBackground, spawnIDExtra = 0;
@@ -24,6 +25,7 @@ public class Spawner : MonoBehaviour {
 
     //Spawn circle
     private CircleCollider2D spawnCircle;
+    private BoxCollider2D spawnBox;
 
     // Use this for initialization
     void Start () {
@@ -38,9 +40,9 @@ public class Spawner : MonoBehaviour {
         {
             InvokeRepeating("SpawnBackground", backgroundSpawnInterval, backgroundSpawnInterval);
         }
-        if(spawnExtra)
+        if(spawnPlankton)
         {
-            InvokeRepeating("SpawnExtra", extraSpawnInterval, extraSpawnInterval);
+            InvokeRepeating("SpawnPlankton", extraSpawnInterval, extraSpawnInterval);
         }
 
         //Get reference to player
@@ -48,6 +50,7 @@ public class Spawner : MonoBehaviour {
 
         //Get spawn circle
         spawnCircle = GetComponent<CircleCollider2D>();
+        spawnBox = GetComponent<BoxCollider2D>();
 
         SpawnInitialEnemies();
 
@@ -60,7 +63,7 @@ public class Spawner : MonoBehaviour {
     private void SpawnInitialEnemies()
     {
         spawnInArea = true;
-        for(int i = 0; i < initialEnemies; i++)
+        for(int i = 0; i < numInitialEnemies; i++)
         {
             Spawn();
             SpawnBackground();
@@ -68,7 +71,7 @@ public class Spawner : MonoBehaviour {
             //Only spawn a third of these
             if (i % 3 == 0)
             {
-                SpawnExtra();
+                SpawnPlankton();
             }
         }
         spawnInArea = false;
@@ -92,22 +95,23 @@ public class Spawner : MonoBehaviour {
             float minSize = player.transform.localScale.x * 0.6f;
             float maxSize = player.transform.localScale.x * 2f;
             float size = Random.Range(minSize, maxSize);
-
+   
             //We have the option of spawning enemies anywhere in the circle (rather than on the circumferance) 
             //We want to do this for the initial spawning of enemies
             Vector2 spawnPos = Vector2.zero;
             if (!spawnInArea)
             {
                 //Get spawn pos on circumferance
-                spawnPos = new Vector2(player.transform.position.x, player.transform.position.y) + Random.insideUnitCircle.normalized * (spawnCircle.radius * transform.parent.localScale.x);
+                //spawnPos = new Vector2(player.transform.position.x, player.transform.position.y) + Random.insideUnitCircle.normalized * (spawnCircle.radius * transform.parent.localScale.x);
+                spawnPos = MathFunctions.FindRandomPointOnRectanglePerimeter(spawnBox);
             }
             else
             {
                 //Get spawn point in area of circle
-                spawnPos = Random.insideUnitCircle * (spawnCircle.radius * transform.parent.localScale.x);
-                size *= 5;
+                //spawnPos = Random.insideUnitCircle * (spawnCircle.radius * transform.parent.localScale.x);
+                //size *= 5;
 
-                if (spawnPos.magnitude < 20)
+                if (spawnPos.magnitude < 25)
                 {
                     return;
                 }
@@ -120,6 +124,7 @@ public class Spawner : MonoBehaviour {
                 GameObject obj = Instantiate(objToSpawn[Random.Range(0, objToSpawn.Length)], spawnPos, Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, Random.Range(0f, 360f))));
                 obj.transform.localScale = new Vector3(size, size, obj.transform.localScale.z);
                 obj.GetComponent<wander>().SetMoveSpeed(moveSpeed);
+                obj.GetComponent<wander>().SetTurnSpeed(0.2f / obj.transform.localScale.x);
                 obj.name = "Enemy" + spawnIDForeground;
 
                 //Just to neaten up inspector while running, hide all spawned enemies under the GameManager gameObject
@@ -135,18 +140,15 @@ public class Spawner : MonoBehaviour {
     {
         if (player != null && GameObject.FindGameObjectsWithTag("Background_Sprite").Length < 10 || spawnInArea)
         {
-            //Set the spawn circle radius so we can visually see in the scene view the spawn area
-            //spawnCircle.radius = player.transform.localScale.x * 20f;
-
             //Choose random move speed from min and max using player speed as reference. This means as the player scales up things stay consistent
             float playerMoveSpeed = player.GetComponent<PlayerMoveJoystick>().GetMoveSpeed();
-            float minMoveSpeed = playerMoveSpeed / 15f;
-            float maxMoveSpeed = playerMoveSpeed / 20f;
+            float minMoveSpeed = playerMoveSpeed / 6f;
+            float maxMoveSpeed = playerMoveSpeed / 3f;
             float moveSpeed = Random.Range(minMoveSpeed, maxMoveSpeed);
 
             //Choose random scale based on player size
-            float minSize = player.transform.localScale.x / 4f;
-            float maxSize = player.transform.localScale.x / 2f;
+            float minSize = player.transform.localScale.x * 2f;
+            float maxSize = player.transform.localScale.x * 7f;
             float size = Random.Range(minSize, maxSize);
 
             //We have the option of spawning enemies anywhere in the circle (rather than on the circumferance) 
@@ -155,12 +157,14 @@ public class Spawner : MonoBehaviour {
             if (!spawnInArea)
             {
                 //Get spawn pos on circumferance
-                spawnPos = new Vector2(player.transform.position.x, player.transform.position.y) + Random.insideUnitCircle.normalized * (spawnCircle.radius * transform.parent.localScale.x);
+                //spawnPos = new Vector2(player.transform.position.x, player.transform.position.y) + Random.insideUnitCircle.normalized * (spawnCircle.radius * transform.parent.localScale.x);
+                spawnPos = MathFunctions.FindRandomPointOnRectanglePerimeter(spawnBox);
             }
             else
             {
                 //Get spawn point in area of circle
-                spawnPos = Random.insideUnitCircle * (spawnCircle.radius * transform.parent.localScale.x);
+                //spawnPos = Random.insideUnitCircle * (spawnCircle.radius * transform.parent.localScale.x);
+                //size *= 5;
             }
 
             //Make sure we spawn them on top of each other by doing an overlap circle
@@ -169,8 +173,12 @@ public class Spawner : MonoBehaviour {
                 //Instantiate obj, set its scale, speed and name
                 GameObject obj = Instantiate(bgObjToSpawn[Random.Range(0, bgObjToSpawn.Length)], spawnPos, Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, Random.Range(0f, 360f))));
                 obj.transform.localScale = new Vector3(size, size, obj.transform.localScale.z);
-                obj.GetComponent<wander>().SetMoveSpeed(moveSpeed);
-                obj.GetComponent<wander>().SetTurnSpeed(0.1f);
+
+                if (obj.GetComponent<wander>())
+                {
+                    obj.GetComponent<wander>().SetMoveSpeed(moveSpeed);
+                    obj.GetComponent<wander>().SetTurnSpeed(0.2f / obj.transform.localScale.x);
+                }
                 obj.name = "EnemyBg" + spawnIDBackground;
 
                 //Choose a random color for the enemy
@@ -185,13 +193,28 @@ public class Spawner : MonoBehaviour {
         }       
     }
 
-    private void SpawnExtra()
+    private void SpawnPlankton()
     {
-        if (player != null && GameObject.FindGameObjectsWithTag("Extra").Length < 10 || spawnInArea)
+        if (player != null && GameObject.FindGameObjectsWithTag("Plankton").Length < 10 || spawnInArea)
         {
-            //Choose random scale based on player size
-            float minSize = player.transform.localScale.x * 1.5f;
-            float maxSize = player.transform.localScale.x * 20f;
+            int index = Random.Range(0, planktonObjToSpawn.Length);
+
+            float minSize = 1f;
+            float maxSize = 1f;
+            if(planktonObjToSpawn[index].name == "plankton_cylinder")
+            {
+                //Choose random scale based on player size
+                minSize = player.transform.localScale.x * 5f;
+                maxSize = player.transform.localScale.x * 20f;
+            }
+            else if(planktonObjToSpawn[index].name == "plankton_disc")
+            {
+                //Choose random scale based on player size
+                minSize = player.transform.localScale.x * 10f;
+                maxSize = player.transform.localScale.x * 20f;
+            }
+
+            //Assign size between min and max
             float size = Random.Range(minSize, maxSize);
 
             //We have the option of spawning enemies anywhere in the circle (rather than on the circumferance) 
@@ -200,12 +223,13 @@ public class Spawner : MonoBehaviour {
             if (!spawnInArea)
             {
                 //Get spawn pos on circumferance
-                spawnPos = new Vector2(player.transform.position.x, player.transform.position.y) + Random.insideUnitCircle.normalized * (spawnCircle.radius * transform.parent.localScale.x);
+                //spawnPos = new Vector2(player.transform.position.x, player.transform.position.y) + Random.insideUnitCircle.normalized * (spawnCircle.radius * transform.parent.localScale.x);
+                spawnPos = MathFunctions.FindRandomPointOnRectanglePerimeter(spawnBox);
             }
             else
             {
                 //Get spawn point in area of circle
-                spawnPos = Random.insideUnitCircle * (spawnCircle.radius * transform.parent.localScale.x);
+                //spawnPos = Random.insideUnitCircle * (spawnCircle.radius * transform.parent.localScale.x);
 
                 if (spawnPos.magnitude < 20)
                 {
@@ -213,20 +237,18 @@ public class Spawner : MonoBehaviour {
                 }
             }
 
-            //Make sure we spawn them on top of each other by doing an overlap circle
-            if (NoOverlap(spawnPos, size, "Enemy") && NoOverlap(spawnPos, size, "Extra"))
+            if (NoOverlap(spawnPos, size, "Plankton"))
             {
                 //Instantiate obj, set its scale, speed and name
-                int index = Random.Range(0, extraObjToSpawn.Length);
-                GameObject obj = Instantiate(extraObjToSpawn[index], spawnPos, extraObjToSpawn[index].transform.rotation);
+                GameObject obj = Instantiate(planktonObjToSpawn[index], spawnPos, planktonObjToSpawn[index].transform.rotation);
 
                 //obj.transform.rotation = Quaternion.Euler(new Vector3(180, obj.transform.rotation.eulerAngles.y, Random.Range(0f, 360f)));
 
                 obj.transform.localScale = new Vector3(size, size, size);
-                obj.name = "Extra" + spawnIDExtra;
+                obj.name = "Plankton" + spawnIDExtra;
 
                 //Just to neaten up inspector while running, hide all spawned enemies under the GameManager gameObject
-                obj.transform.parent = GameObject.Find("Extra").transform;
+                obj.transform.parent = GameObject.FindGameObjectWithTag("GameManager").transform.Find("Extra").transform;
 
                 //Increment the spawn id
                 spawnIDExtra++;
@@ -258,7 +280,7 @@ public class Spawner : MonoBehaviour {
     private IEnumerator delay()
     {
         spawnEnemies = false;
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(6f);
         spawnEnemies = true;
     }
 }

@@ -51,7 +51,10 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerGrow>().Grow(newSize);
 
         //Zoom camera out
-        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviour>().Zoom(player.transform.localScale.x * 15f);
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviour>().Zoom(player.transform.localScale.x * 100f);
+
+        //Trigger stageUpEvent
+        EventManager.OnStageUp(currentStage);
     }
 
     private void SetObjToSpawn()
@@ -99,5 +102,6 @@ public class GameManager : MonoBehaviour
     private void OnPlayerKilled()
     {
         SceneManager.LoadScene("menu");
+        EventManager.ClearAll();
     }
 }

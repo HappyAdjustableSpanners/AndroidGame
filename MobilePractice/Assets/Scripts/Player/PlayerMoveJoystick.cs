@@ -12,7 +12,7 @@ public class PlayerMoveJoystick : MonoBehaviour {
     private Vector2 dir;
     private bool allowMovement = true;
 
-    public CircleCollider2D map;
+    public BoxCollider2D map;
     private CameraBehaviour cameraBehaviour;
 
 	// Use this for initialization
@@ -33,12 +33,13 @@ public class PlayerMoveJoystick : MonoBehaviour {
             if(cameraBehaviour.getInitialZoomDone())
             {
                 //We want the movement speed to stay the same (relatively) as the player increases in size
-                moveSpeed = (map.bounds.extents.x - -map.bounds.extents.x) * 2;
+                moveSpeed = (map.bounds.extents.x - -map.bounds.extents.x) * 5;
             }
 
             //Set velocity based on input vector and move speed
             rb.velocity = dir * Time.deltaTime * moveSpeed;
 
+           
             //Look forward
             if (dir != Vector2.zero)
             {
