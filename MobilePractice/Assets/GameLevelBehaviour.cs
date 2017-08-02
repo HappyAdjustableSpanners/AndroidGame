@@ -22,7 +22,7 @@ public class GameLevelBehaviour : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        StartCoroutine("delay");
+        //StartCoroutine("delay");
         bgPlaneSR = transform.Find("BgPlane").GetComponent<MeshRenderer>();
         EventManager.stageUpMethods += OnStageUp;
         EventManager.orthoSizeChangedMethods += OnOrthoSizeChanged;
@@ -91,7 +91,7 @@ public class GameLevelBehaviour : MonoBehaviour {
         transform.Find("BgPlane").transform.localScale = new Vector3(width / 7, 1f, height / 7);
 
         //Change spawner rectangle size
-        transform.Find("Spawner").transform.localScale = new Vector3(width * 1.3f, height * 1.3f, 1f);
-        transform.Find("DeathLimit").transform.localScale = new Vector3(width, height, 1f) * 1.4f;
+        transform.Find("Spawner").transform.localScale = new Vector3(width, height, 1f) * 1.5f;
+        transform.Find("DeathLimit").transform.localScale = new Vector3(width, height, 1f) * 1.5f;
     }
 }

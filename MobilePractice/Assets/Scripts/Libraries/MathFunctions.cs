@@ -90,5 +90,18 @@ public class MathFunctions : MonoBehaviour
         return point;
     }
 
+    public static Vector2 FindRandomPointInsideRectangle(BoxCollider2D rect)
+    {
+        Vector2 point = Vector2.zero;
+
+        //Get random x and random y between size limits
+        float x = Random.Range(rect.bounds.min.x, rect.bounds.max.x);
+        float y = Random.Range(rect.bounds.min.y, rect.bounds.max.y);
+        point.x = x;
+        point.y = y;
+
+        return point;
+    }
+
    
 }

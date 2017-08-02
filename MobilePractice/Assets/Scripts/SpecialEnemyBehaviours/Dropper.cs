@@ -27,7 +27,7 @@ public class Dropper : MonoBehaviour {
         if (player != null)
         {
             float playerSize = player.transform.localScale.x;
-            float size = Random.Range(playerSize * 0.3f, playerSize * 0.6f);
+            float size = Random.Range(playerSize * 0.5f, playerSize * 0.7f);
             float randRotZ = Random.Range(0f, 360f);
             GameObject drop = Instantiate(obj, transform.position, Quaternion.Euler(new Vector3(0f, 0f, randRotZ)));
             drop.transform.localScale = new Vector3(size, size, 1f);

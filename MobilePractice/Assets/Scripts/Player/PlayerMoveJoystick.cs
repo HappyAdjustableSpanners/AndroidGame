@@ -7,6 +7,10 @@ public class PlayerMoveJoystick : MonoBehaviour {
     public VirtualJoystick joystick;
     public float moveSpeed = 40f;
     public float lookSpeed;
+    private float speedFactor = 5f;
+
+    private float moveFactor = 1f;
+    private bool initialZoomDone = false;
 
     private Rigidbody2D rb;
     private Vector2 dir;
@@ -19,6 +23,8 @@ public class PlayerMoveJoystick : MonoBehaviour {
 	void Start () {
         rb = GetComponent<Rigidbody2D>();
         cameraBehaviour = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviour>();
+
+        EventManager.finishedInitialZoomMethods += OnInitialZoomFinished;
 	}
 
     // Update is called once per frame
@@ -30,10 +36,10 @@ public class PlayerMoveJoystick : MonoBehaviour {
             dir.x = joystick.Horizontal();
             dir.y = joystick.Vertical();
 
-            if(cameraBehaviour.getInitialZoomDone())
+            if(initialZoomDone)
             {
                 //We want the movement speed to stay the same (relatively) as the player increases in size
-                moveSpeed = (map.bounds.extents.x - -map.bounds.extents.x) * 5;
+                moveSpeed = (map.bounds.size.x * speedFactor) / moveFactor;
             }
 
             //Set velocity based on input vector and move speed
@@ -52,6 +58,7 @@ public class PlayerMoveJoystick : MonoBehaviour {
     public void SetAllowMovement(bool value)
     {
         allowMovement = value;
+        rb.velocity = Vector2.zero;
     }
 
     public float GetMoveSpeed()
@@ -59,8 +66,12 @@ public class PlayerMoveJoystick : MonoBehaviour {
         return moveSpeed;
     }
 
-    public void SetMoveSpeed(float value)
+    private void OnInitialZoomFinished()
     {
-        moveSpeed = value;
+        initialZoomDone = true;
+        if (map.bounds.extents.x > 7f)
+        {
+            moveFactor = map.bounds.extents.x / 7f;
+        }
     }
 }

@@ -5,8 +5,8 @@ using UnityEngine;
 public class Spawner : MonoBehaviour {
 
 
-    public float spawnInterval, backgroundSpawnInterval, extraSpawnInterval;
-    public bool spawnEnemies, spawnBackgroundEnemies, spawnPlankton = true;
+    public float spawnInterval, backgroundSpawnInterval, extraSpawnInterval, pickupSpawnInterval;
+    public bool spawnEnemies, spawnBackgroundEnemies, spawnPlankton, spawnPickups = false;
     private bool spawnInArea = false;
 
     //Number of initial enemies (that get culled by zoom-in)
@@ -16,9 +16,10 @@ public class Spawner : MonoBehaviour {
     private GameObject[] objToSpawn = null;
     public GameObject[] bgObjToSpawn = new GameObject[4];
     public GameObject[] planktonObjToSpawn = new GameObject[1];
+    public GameObject[] pickupsToSpawn = new GameObject[1];
 
     //Spawn id of obj (unique identifier)
-    private int spawnIDForeground, spawnIDBackground, spawnIDExtra = 0;
+    private int spawnIDForeground, spawnIDBackground, spawnIDExtra, spawnIDPickup = 0;
 
     //Player
     private GameObject player;
@@ -28,22 +29,8 @@ public class Spawner : MonoBehaviour {
     private BoxCollider2D spawnBox;
 
     // Use this for initialization
-    void Start () {
-
-        //Can turn spawning on/off
-        if (spawnEnemies)
-        {
-            //Spawn foreground and background enemy every interval
-            InvokeRepeating("Spawn", spawnInterval, spawnInterval);
-        }
-        if (spawnBackgroundEnemies)
-        {
-            InvokeRepeating("SpawnBackground", backgroundSpawnInterval, backgroundSpawnInterval);
-        }
-        if(spawnPlankton)
-        {
-            InvokeRepeating("SpawnPlankton", extraSpawnInterval, extraSpawnInterval);
-        }
+    void Start()
+    {
 
         //Get reference to player
         player = GameObject.FindGameObjectWithTag("Player");
@@ -54,25 +41,30 @@ public class Spawner : MonoBehaviour {
 
         SpawnInitialEnemies();
 
-        if (spawnEnemies == true)
-        {
-            StartCoroutine("delay");
-        }
-	}
+        StartSpawn();
+
+        //if (spawnEnemies == true)
+        //{
+        //    StartCoroutine("delay");
+        //}
+
+        //Subscribe to events
+        //EventManager.finishedInitialZoomMethods += OnFinishedInitialZoom;
+    }
 
     private void SpawnInitialEnemies()
     {
         spawnInArea = true;
         for(int i = 0; i < numInitialEnemies; i++)
         {
-            Spawn();
+            //Spawn();
             SpawnBackground();
 
             //Only spawn a third of these
-            if (i % 3 == 0)
-            {
-                SpawnPlankton();
-            }
+            //if (i % 3 == 0)
+            //{
+            //    SpawnPlankton();
+            //}
         }
         spawnInArea = false;
     }
@@ -92,7 +84,7 @@ public class Spawner : MonoBehaviour {
             float moveSpeed = Random.Range(minMoveSpeed, maxMoveSpeed);
 
             //Choose random scale based on player size
-            float minSize = player.transform.localScale.x * 0.6f;
+            float minSize = player.transform.localScale.x * 0.3f;
             float maxSize = player.transform.localScale.x * 2f;
             float size = Random.Range(minSize, maxSize);
    
@@ -118,7 +110,7 @@ public class Spawner : MonoBehaviour {
             }
 
             //Make sure we spawn them on top of each other by doing an overlap circle
-            if (NoOverlap(spawnPos, size, "Enemy"))
+            if (NoOverlap(spawnPos, size, "Enemy") && NoOverlap(spawnPos, size, "Plankton"))
             {
                 //Instantiate obj, set its scale, speed and name
                 GameObject obj = Instantiate(objToSpawn[Random.Range(0, objToSpawn.Length)], spawnPos, Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, Random.Range(0f, 360f))));
@@ -163,7 +155,7 @@ public class Spawner : MonoBehaviour {
             else
             {
                 //Get spawn point in area of circle
-                //spawnPos = Random.insideUnitCircle * (spawnCircle.radius * transform.parent.localScale.x);
+                spawnPos = MathFunctions.FindRandomPointInsideRectangle(spawnBox);
                 //size *= 5;
             }
 
@@ -256,6 +248,44 @@ public class Spawner : MonoBehaviour {
         }
     }
 
+    private void SpawnPickups()
+    {
+        if (player != null)
+        {
+            int index = Random.Range(0, pickupsToSpawn.Length);
+
+            float minSize = 1f;
+            float maxSize = 1f;
+  
+            minSize = player.transform.localScale.x * 0.5f;
+            maxSize = player.transform.localScale.x * 0.7f;
+            //Assign size between min and max
+            float size = Random.Range(minSize, maxSize);
+
+            //We have the option of spawning enemies anywhere in the circle (rather than on the circumferance) 
+            //We want to do this for the initial spawning of enemies
+            Vector2 spawnPos = Vector2.zero;
+  
+            //Get spawn pos on circumferance
+            spawnPos = MathFunctions.FindRandomPointOnRectanglePerimeter(spawnBox);
+
+            if (NoOverlap(spawnPos, size, "Enemy_Food"))
+            {
+                //Instantiate obj, set its scale, speed and name
+                GameObject obj = Instantiate(pickupsToSpawn[index], spawnPos, pickupsToSpawn[index].transform.rotation);
+
+                obj.transform.localScale = new Vector3(size, size, size);
+                obj.name = "Pickup" + spawnIDExtra;
+
+                //Just to neaten up inspector while running, hide all spawned enemies under the GameManager gameObject
+                obj.transform.parent = GameObject.FindGameObjectWithTag("GameManager").transform.Find("Pickups").transform;
+
+                //Increment the spawn id
+                spawnIDPickup++;
+            }
+        }
+    }
+
     //Manually set the objects to spawn
     public void setObjsToSpawn(GameObject[] tempObjToSpawn)
     {
@@ -280,7 +310,28 @@ public class Spawner : MonoBehaviour {
     private IEnumerator delay()
     {
         spawnEnemies = false;
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(8f);
         spawnEnemies = true;
+    }
+
+    private void StartSpawn()
+    {
+        //Can turn spawning on/off
+        if (spawnEnemies)
+        {
+            InvokeRepeating("Spawn", spawnInterval, spawnInterval);
+        }
+        if (spawnBackgroundEnemies)
+        {
+            InvokeRepeating("SpawnBackground", backgroundSpawnInterval, backgroundSpawnInterval);
+        }
+        if (spawnPlankton)
+        {
+            InvokeRepeating("SpawnPlankton", extraSpawnInterval, extraSpawnInterval);
+        }
+        if(spawnPickups)
+        {
+            InvokeRepeating("SpawnPickups", pickupSpawnInterval, pickupSpawnInterval);
+        }
     }
 }

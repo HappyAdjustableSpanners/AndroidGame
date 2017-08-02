@@ -8,27 +8,35 @@ public class ScoreManager : MonoBehaviour {
     public Text scoreText;
     private int score = 0;
     public Slider progressSlider;
+    private bool moveSlider = false;
+    private float newSliderVal = 0f;
     
 
 	// Use this for initialization
 	void Start () {
-		
+        newSliderVal = progressSlider.value;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (Mathf.Abs(progressSlider.value - newSliderVal) > 0.1f)
+        {
+            progressSlider.value = Mathf.Lerp(progressSlider.value, newSliderVal, Time.deltaTime);
+        }
 	}
 
     public void IncrementScore(int value)
     {
         score += value;
         UpdateScoreText();
-        progressSlider.value += 0.1f;
+
+
+        newSliderVal += 0.2f;
+
 
         if(progressSlider.value >= progressSlider.maxValue)
         {
-            progressSlider.value = 0f;
+            newSliderVal = 0f;
             //progressSlider.maxValue += 1f;
             GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().IncrementStage();
         }

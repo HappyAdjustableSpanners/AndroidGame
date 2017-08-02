@@ -99,6 +99,7 @@
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\ScoreManager.cs" />
     <Compile Include="Assets\Scripts\Managers\Spawner.cs" />
+    <Compile Include="Assets\Scripts\Menu\Fade.cs" />
     <Compile Include="Assets\Scripts\Menu\MenuScene.cs" />
     <Compile Include="Assets\Scripts\Menu\MiniGestureRecognizer.cs" />
     <Compile Include="Assets\Scripts\Menu\MusicBehaviour.cs" />
