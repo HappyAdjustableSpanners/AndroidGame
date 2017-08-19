@@ -91,7 +91,7 @@ public class GameLevelBehaviour : MonoBehaviour {
         transform.Find("BgPlane").transform.localScale = new Vector3(width / 7, 1f, height / 7);
 
         //Change spawner rectangle size
-        transform.Find("Spawner").transform.localScale = new Vector3(width, height, 1f) * 1.5f;
-        transform.Find("DeathLimit").transform.localScale = new Vector3(width, height, 1f) * 1.5f;
+        transform.Find("Spawner").transform.localScale = new Vector3(width, height, 1f) * 2f;
+        transform.Find("DeathLimit").transform.localScale = new Vector3(width, height, 1f) * 2f;
     }
 }

@@ -41,7 +41,10 @@ public class EventManager : MonoBehaviour {
 
     public static void OnFinishedInitialZoom()
     {
-        finishedInitialZoomMethods();
+        if (finishedInitialZoomMethods != null)
+        {
+            finishedInitialZoomMethods();
+        }
     }
 
     public static void ClearAll()

@@ -1,0 +1,457 @@
+fileFormatVersion: 2
+guid: cb7ef676562e3af4cbb67c06e09720ae
+timeCreated: 1501967136
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Wii - Bust-a-Move Plus - Bubbles (1) 1_0
+    21300002: Wii - Bust-a-Move Plus - Bubbles (1) 1_1
+    21300004: Wii - Bust-a-Move Plus - Bubbles (1) 1_2
+    21300006: Wii - Bust-a-Move Plus - Bubbles (1) 1_3
+    21300008: Wii - Bust-a-Move Plus - Bubbles (1) 1_4
+    21300010: Wii - Bust-a-Move Plus - Bubbles (1) 1_5
+    21300012: Wii - Bust-a-Move Plus - Bubbles (1) 1_6
+    21300014: Wii - Bust-a-Move Plus - Bubbles (1) 1_7
+    21300016: Wii - Bust-a-Move Plus - Bubbles (1) 1_8
+    21300018: Wii - Bust-a-Move Plus - Bubbles (1) 1_9
+    21300020: Wii - Bust-a-Move Plus - Bubbles (1) 1_10
+    21300022: Wii - Bust-a-Move Plus - Bubbles (1) 1_11
+    21300024: Wii - Bust-a-Move Plus - Bubbles (1) 1_12
+    21300026: Wii - Bust-a-Move Plus - Bubbles (1) 1_13
+    21300028: Wii - Bust-a-Move Plus - Bubbles (1) 1_14
+    21300030: Wii - Bust-a-Move Plus - Bubbles (1) 1_15
+    21300032: Wii - Bust-a-Move Plus - Bubbles (1) 1_16
+    21300034: Wii - Bust-a-Move Plus - Bubbles (1) 1_17
+    21300036: Wii - Bust-a-Move Plus - Bubbles (1) 1_18
+    21300038: Wii - Bust-a-Move Plus - Bubbles (1) 1_19
+    21300040: Wii - Bust-a-Move Plus - Bubbles (1) 1_20
+    21300042: Wii - Bust-a-Move Plus - Bubbles (1) 1_21
+    21300044: Wii - Bust-a-Move Plus - Bubbles (1) 1_22
+    21300046: Wii - Bust-a-Move Plus - Bubbles (1) 1_23
+    21300048: Wii - Bust-a-Move Plus - Bubbles (1) 1_24
+    21300050: Wii - Bust-a-Move Plus - Bubbles (1) 1_25
+    21300052: Wii - Bust-a-Move Plus - Bubbles (1) 1_26
+    21300054: Wii - Bust-a-Move Plus - Bubbles (1) 1_27
+    21300056: Wii - Bust-a-Move Plus - Bubbles (1) 1_28
+    21300058: Wii - Bust-a-Move Plus - Bubbles (1) 1_29
+    21300060: Wii - Bust-a-Move Plus - Bubbles (1) 1_30
+    21300062: Wii - Bust-a-Move Plus - Bubbles (1) 1_31
+    21300064: Wii - Bust-a-Move Plus - Bubbles (1) 1_32
+    21300066: Wii - Bust-a-Move Plus - Bubbles (1) 1_33
+    21300068: Wii - Bust-a-Move Plus - Bubbles (1) 1_34
+    21300070: Wii - Bust-a-Move Plus - Bubbles (1) 1_35
+    21300072: Wii - Bust-a-Move Plus - Bubbles (1) 1_36
+    21300074: Wii - Bust-a-Move Plus - Bubbles (1) 1_37
+    21300076: Wii - Bust-a-Move Plus - Bubbles (1) 1_38
+    21300078: Wii - Bust-a-Move Plus - Bubbles (1) 1_39
+    21300080: Wii - Bust-a-Move Plus - Bubbles (1) 1_40
+    21300082: Wii - Bust-a-Move Plus - Bubbles (1) 1_41
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Wii - Bust-a-Move Plus - Bubbles (1) 1_2
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 149
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wii - Bust-a-Move Plus - Bubbles (1) 1_3
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 77
+        width: 64
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wii - Bust-a-Move Plus - Bubbles (1) 1_4
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 77
+        width: 63
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wii - Bust-a-Move Plus - Bubbles (1) 1_5
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 77
+        width: 62
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wii - Bust-a-Move Plus - Bubbles (1) 1_6
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 12
+        width: 63
+        height: 59
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wii - Bust-a-Move Plus - Bubbles (1) 1_0
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 153
+        width: 38
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wii - Bust-a-Move Plus - Bubbles (1) 1_1
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 149
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline:
+    - - {x: 55, y: -110}
+      - {x: 55, y: -111}
+      - {x: 70, y: -111}
+      - {x: 69, y: -108}
+      - {x: 63, y: -107}
+      - {x: 57, y: -108}
+    - - {x: -89, y: -79}
+      - {x: -97, y: -83}
+      - {x: -98, y: -86}
+      - {x: -98, y: -90}
+      - {x: -87, y: -101}
+      - {x: -73, y: -101}
+      - {x: -69, y: -95}
+      - {x: -69, y: -91}
+      - {x: -77, y: -79}
+    - - {x: -57, y: -95}
+      - {x: -60, y: -98}
+      - {x: -59, y: -101}
+      - {x: -54, y: -101}
+      - {x: -52, y: -100}
+      - {x: -52, y: -97}
+      - {x: -53, y: -95}
+    - - {x: -47, y: -101}
+      - {x: -42, y: -99}
+      - {x: -42, y: -96}
+      - {x: -45, y: -95}
+      - {x: -49, y: -98}
+    - - {x: -34, y: -73}
+      - {x: -35, y: -73}
+      - {x: -38, y: -76}
+      - {x: -35, y: -73}
+      - {x: -33, y: -73}
+      - {x: -31, y: -71}
+      - {x: -31, y: -67}
+      - {x: -33, y: -65}
+      - {x: -42, y: -65}
+      - {x: -51, y: -79}
+      - {x: -51, y: -99}
+      - {x: -34, y: -99}
+      - {x: -31, y: -88}
+      - {x: -31, y: -76}
+    - - {x: -97, y: -62}
+      - {x: -99, y: -63}
+      - {x: -99, y: -83}
+      - {x: -96, y: -84}
+      - {x: -92, y: -84}
+      - {x: -89, y: -83}
+      - {x: -87, y: -80}
+      - {x: -87, y: -72}
+      - {x: -93, y: -62}
+    - - {x: -70, y: -64}
+      - {x: -74, y: -69}
+      - {x: -74, y: -73}
+      - {x: -70, y: -77}
+      - {x: -64, y: -77}
+      - {x: -62, y: -73}
+      - {x: -62, y: -68}
+      - {x: -66, y: -64}
+    - - {x: -90, y: -58}
+      - {x: -90, y: -64}
+      - {x: -89, y: -67}
+      - {x: -83, y: -67}
+      - {x: -83, y: -60}
+      - {x: -87, y: -58}
+    - - {x: -38, y: -63}
+      - {x: -37, y: -65}
+      - {x: -34, y: -65}
+      - {x: -31, y: -64}
+      - {x: -31, y: -58}
+      - {x: -35, y: -54}
+      - {x: -38, y: -55}
+    - - {x: -95, y: -52}
+      - {x: -95, y: -54}
+      - {x: -93, y: -56}
+      - {x: -91, y: -56}
+      - {x: -89, y: -54}
+      - {x: -88, y: -50}
+      - {x: -91, y: -48}
+    - - {x: -43, y: -43}
+      - {x: -44, y: -45}
+      - {x: -44, y: -51}
+      - {x: -39, y: -55}
+      - {x: -36, y: -54}
+      - {x: -36, y: -48}
+      - {x: -38, y: -43}
+    - - {x: -87, y: -50}
+      - {x: -82, y: -50}
+      - {x: -80, y: -47}
+      - {x: -80, y: -40}
+      - {x: -81, y: -38}
+      - {x: -86, y: -38}
+      - {x: -91, y: -40}
+      - {x: -91, y: -47}
+    - - {x: 96, y: -28}
+      - {x: 96, y: -7}
+      - {x: 94, y: -5}
+      - {x: 90, y: -6}
+      - {x: 87, y: -15}
+      - {x: 88, y: -11}
+      - {x: 88, y: -7}
+      - {x: 96, y: -1}
+      - {x: 96, y: 3}
+      - {x: 93, y: 6}
+      - {x: 95, y: 7}
+      - {x: 96, y: 10}
+      - {x: 94, y: 15}
+      - {x: 91, y: 15}
+      - {x: 89, y: 13}
+      - {x: 89, y: 11}
+      - {x: 87, y: 13}
+      - {x: 85, y: 14}
+      - {x: 88, y: 13}
+      - {x: 90, y: 15}
+      - {x: 92, y: 21}
+      - {x: 78, y: 31}
+      - {x: 74, y: 31}
+      - {x: 62, y: 6}
+      - {x: 69, y: -14}
+      - {x: 72, y: -16}
+      - {x: 76, y: -12}
+      - {x: 73, y: -16}
+      - {x: 69, y: -24}
+      - {x: 72, y: -26}
+      - {x: 61, y: -20}
+      - {x: 59, y: -9}
+      - {x: 54, y: 3}
+      - {x: 48, y: 20}
+      - {x: 17, y: 31}
+      - {x: 8, y: 31}
+      - {x: -1, y: 20}
+      - {x: 4, y: 11}
+      - {x: 2, y: 3}
+      - {x: 7, y: 1}
+      - {x: 20, y: 3}
+      - {x: 21, y: 5}
+      - {x: 21, y: 9}
+      - {x: 20, y: 12}
+      - {x: 21, y: 9}
+      - {x: 22, y: 8}
+      - {x: 18, y: -3}
+      - {x: 10, y: -4}
+      - {x: 4, y: -15}
+      - {x: 8, y: -21}
+      - {x: 5, y: -24}
+      - {x: 5, y: -25}
+      - {x: 5, y: -24}
+      - {x: 6, y: -20}
+      - {x: 5, y: -17}
+      - {x: 0, y: -10}
+      - {x: -10, y: -3}
+      - {x: -12, y: -3}
+      - {x: -3, y: -2}
+      - {x: 2, y: 4}
+      - {x: 1, y: 7}
+      - {x: -3, y: 14}
+      - {x: -14, y: 23}
+      - {x: -26, y: 22}
+      - {x: -32, y: 14}
+      - {x: -34, y: 8}
+      - {x: -37, y: 3}
+      - {x: -41, y: 0}
+      - {x: -43, y: 3}
+      - {x: -46, y: 10}
+      - {x: -55, y: 19}
+      - {x: -60, y: 21}
+      - {x: -64, y: 21}
+      - {x: -67, y: 20}
+      - {x: -63, y: 21}
+      - {x: -60, y: 23}
+      - {x: -60, y: 25}
+      - {x: -46, y: 9}
+      - {x: -42, y: 1}
+      - {x: -40, y: 1}
+      - {x: -35, y: 7}
+      - {x: -32, y: 28}
+      - {x: -47, y: 31}
+      - {x: -84, y: 31}
+      - {x: -99, y: 29}
+      - {x: -99, y: -29}
+      - {x: -88, y: -37}
+      - {x: -72, y: -35}
+      - {x: -70, y: -32}
+      - {x: -76, y: -26}
+      - {x: -70, y: -32}
+      - {x: -70, y: -35}
+      - {x: -68, y: -38}
+      - {x: 87, y: -38}
+    - - {x: 42, y: 29}
+      - {x: 37, y: 24}
+      - {x: 37, y: 16}
+      - {x: 42, y: 13}
+      - {x: 49, y: 13}
+      - {x: 53, y: 15}
+      - {x: 56, y: 26}
+      - {x: 56, y: 29}
+    - - {x: -4, y: 23}
+      - {x: -6, y: 21}
+      - {x: -7, y: 17}
+      - {x: -6, y: 15}
+      - {x: -2, y: 15}
+      - {x: 2, y: 17}
+      - {x: 2, y: 21}
+      - {x: -1, y: 23}
+    - - {x: -18, y: 31}
+      - {x: -22, y: 26}
+      - {x: -22, y: 22}
+      - {x: -20, y: 21}
+      - {x: -12, y: 21}
+      - {x: -4, y: 25}
+      - {x: -1, y: 28}
+      - {x: -2, y: 31}
+    - - {x: 60, y: 26}
+      - {x: 63, y: 27}
+      - {x: 63, y: 30}
+      - {x: 60, y: 31}
+      - {x: 58, y: 29}
+    - - {x: -17, y: 86}
+      - {x: -26, y: 81}
+      - {x: -26, y: 42}
+      - {x: -13, y: 36}
+      - {x: 16, y: 36}
+      - {x: 24, y: 45}
+      - {x: 24, y: 81}
+      - {x: 6, y: 86}
+    - - {x: 54, y: 86}
+      - {x: 38, y: 79}
+      - {x: 38, y: 46}
+      - {x: 46, y: 36}
+      - {x: 78, y: 36}
+      - {x: 88, y: 50}
+      - {x: 88, y: 75}
+      - {x: 75, y: 86}
+    - - {x: -80, y: 82}
+      - {x: -86, y: 78}
+      - {x: -86, y: 43}
+      - {x: -76, y: 40}
+      - {x: -46, y: 40}
+      - {x: -44, y: 42}
+      - {x: -44, y: 73}
+      - {x: -48, y: 82}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

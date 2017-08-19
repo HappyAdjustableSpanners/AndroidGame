@@ -18,6 +18,9 @@ public class PlayerMoveJoystick : MonoBehaviour {
 
     public BoxCollider2D map;
     private CameraBehaviour cameraBehaviour;
+    private float boostMultiplier = 1.5f;
+
+    private bool boosting = false;
 
 	// Use this for initialization
 	void Start () {
@@ -36,16 +39,26 @@ public class PlayerMoveJoystick : MonoBehaviour {
             dir.x = joystick.Horizontal();
             dir.y = joystick.Vertical();
 
-            if(initialZoomDone)
+            if (dir != Vector2.zero)
             {
-                //We want the movement speed to stay the same (relatively) as the player increases in size
-                moveSpeed = (map.bounds.size.x * speedFactor) / moveFactor;
+                if (!boosting)
+                {
+                    //We want the movement speed to stay the same (relatively) as the player increases in size
+                    moveSpeed = (map.bounds.size.x * speedFactor) / moveFactor;
+                    //Set velocity based on input vector and move speed
+                    rb.velocity = dir * Time.deltaTime * moveSpeed;
+                }
+                else
+                {
+                    //Enemies spawn and scale their movement speed to the player's.
+                    //When the player is boosting, we don't want the enemies to spawn with that boost speed
+                    //So we keep moveSpeed the same, and just change the rigidbody velocity
+                    rb.velocity = dir * Time.deltaTime * (moveSpeed * boostMultiplier);
+                }
             }
 
-            //Set velocity based on input vector and move speed
-            rb.velocity = dir * Time.deltaTime * moveSpeed;
-
            
+
             //Look forward
             if (dir != Vector2.zero)
             {
@@ -64,6 +77,16 @@ public class PlayerMoveJoystick : MonoBehaviour {
     public float GetMoveSpeed()
     {
         return moveSpeed;
+    }
+
+    public void SetMoveSpeed(float value)
+    {
+        moveSpeed = value;
+    }
+
+    public void SetBoosting(bool value)
+    {
+        boosting = value;
     }
 
     private void OnInitialZoomFinished()

@@ -38,6 +38,7 @@ public class MenuScene : MonoBehaviour {
     {
         Debug.Log("Play Button Pressed");
         SceneManager.LoadScene("Play");
+        GetComponent<AudioSource>().Play();
     }
 
     private void NavigateTo(int menuIndex)

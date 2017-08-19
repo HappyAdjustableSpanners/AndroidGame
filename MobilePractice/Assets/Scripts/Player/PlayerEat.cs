@@ -69,6 +69,11 @@ public class PlayerEat : MonoBehaviour {
                         StartCoroutine("FreezeTimed");
                         Destroy(obj);
                     }
+                    else if(obj.tag.Contains("Food"))
+                    {
+                        StartCoroutine("BoostTimed");
+                        Destroy(obj);
+                    }
                     else
                     {
                         //Else, we destroy our prey obj
@@ -133,6 +138,18 @@ public class PlayerEat : MonoBehaviour {
         playerMove.SetAllowMovement(false);
         yield return new WaitForSeconds(3f);
         playerMove.SetAllowMovement(true);
+    }
+
+    private IEnumerator BoostTimed()
+    {
+        //Boost to x2 speed for x seconds, then return to orig speed
+        float origMoveSpeed = playerMove.GetMoveSpeed();
+        playerMove.SetBoosting(true);
+        ParticleSystem.MainModule main = transform.Find("Trail").GetComponent<ParticleSystem>().main;
+        main.startColor = Color.green;
+        yield return new WaitForSeconds(3f);
+        main.startColor = Color.black;
+        playerMove.SetBoosting(false);
     }
 
     private void OnTriggerStay2D(Collider2D col)

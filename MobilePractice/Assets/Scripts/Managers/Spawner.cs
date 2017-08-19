@@ -28,6 +28,10 @@ public class Spawner : MonoBehaviour {
     private CircleCollider2D spawnCircle;
     private BoxCollider2D spawnBox;
 
+    //tags
+    private string[] foregroundTags = { "Extra", "Enemy", "Plankton", };
+    private string[] backgroundTags = { "Background" };
+
     // Use this for initialization
     void Start()
     {
@@ -110,7 +114,7 @@ public class Spawner : MonoBehaviour {
             }
 
             //Make sure we spawn them on top of each other by doing an overlap circle
-            if (NoOverlap(spawnPos, size, "Enemy") && NoOverlap(spawnPos, size, "Plankton"))
+            if (NoOverlap(spawnPos, size, true))
             {
                 //Instantiate obj, set its scale, speed and name
                 GameObject obj = Instantiate(objToSpawn[Random.Range(0, objToSpawn.Length)], spawnPos, Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, Random.Range(0f, 360f))));
@@ -160,7 +164,7 @@ public class Spawner : MonoBehaviour {
             }
 
             //Make sure we spawn them on top of each other by doing an overlap circle
-            if (NoOverlap(spawnPos, size, "Background"))
+            if (NoOverlap(spawnPos, size, false))
             {
                 //Instantiate obj, set its scale, speed and name
                 GameObject obj = Instantiate(bgObjToSpawn[Random.Range(0, bgObjToSpawn.Length)], spawnPos, Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, Random.Range(0f, 360f))));
@@ -229,7 +233,7 @@ public class Spawner : MonoBehaviour {
                 }
             }
 
-            if (NoOverlap(spawnPos, size, "Plankton"))
+            if (NoOverlap(spawnPos, size, true))
             {
                 //Instantiate obj, set its scale, speed and name
                 GameObject obj = Instantiate(planktonObjToSpawn[index], spawnPos, planktonObjToSpawn[index].transform.rotation);
@@ -269,7 +273,7 @@ public class Spawner : MonoBehaviour {
             //Get spawn pos on circumferance
             spawnPos = MathFunctions.FindRandomPointOnRectanglePerimeter(spawnBox);
 
-            if (NoOverlap(spawnPos, size, "Enemy_Food"))
+            if (NoOverlap(spawnPos, size, true))
             {
                 //Instantiate obj, set its scale, speed and name
                 GameObject obj = Instantiate(pickupsToSpawn[index], spawnPos, pickupsToSpawn[index].transform.rotation);
@@ -293,15 +297,31 @@ public class Spawner : MonoBehaviour {
     }
 
 
-    private bool NoOverlap(Vector2 spawnPos, float size, string tag)
+    private bool NoOverlap(Vector2 spawnPos, float size, bool foreground)
     {
         //Return true if there is no overlap with other enemies, else return false
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(spawnPos, size);
         foreach (Collider2D col in hitColliders)
         {
-            if (col.tag.Contains(tag) || col.tag.Equals(tag))
+            if(foreground)
             {
-                return false;
+                foreach (string t in foregroundTags)
+                {
+                    if (col.tag.Contains(t) || col.tag.Equals(t))
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                foreach (string t in backgroundTags)
+                {
+                    if (col.tag.Contains(t) || col.tag.Equals(t))
+                    {
+                        return false;
+                    }
+                }
             }
         }
         return true;
