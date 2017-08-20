@@ -6,7 +6,7 @@ public class PlayerGrow : MonoBehaviour
 {
 
     //Parameters
-    public float growSpeed = 1f;
+    public float growSpeed = 0.5f;
 
     //State
     private bool growing = false;

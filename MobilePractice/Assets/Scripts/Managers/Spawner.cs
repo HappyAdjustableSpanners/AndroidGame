@@ -134,7 +134,7 @@ public class Spawner : MonoBehaviour {
 
     private void SpawnBackground()
     {
-        if (player != null && GameObject.FindGameObjectsWithTag("Background_Sprite").Length < 10 || spawnInArea)
+        if (player != null && GameObject.FindGameObjectsWithTag("Background_Sprite").Length < 20 || spawnInArea)
         {
             //Choose random move speed from min and max using player speed as reference. This means as the player scales up things stay consistent
             float playerMoveSpeed = player.GetComponent<PlayerMoveJoystick>().GetMoveSpeed();
