@@ -85,6 +85,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\BackToMenu.cs" />
+    <Compile Include="Assets\EyeMoveBehaviour.cs" />
+    <Compile Include="Assets\EyeSendTriggers.cs" />
     <Compile Include="Assets\GameLevelBehaviour.cs" />
     <Compile Include="Assets\HidePlayerOnCollision.cs" />
     <Compile Include="Assets\Scripts\Behaviours\Eater.cs" />
