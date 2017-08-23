@@ -7,7 +7,7 @@ public class ScoreManager : MonoBehaviour {
 
     public Text scoreText;
     public int score = 0;
-    private int scoreTarget = 100;
+    private int scoreTarget = 30;
     public Slider progressSlider;
     private bool moveSlider = false;
     private float newSliderVal = 0f;

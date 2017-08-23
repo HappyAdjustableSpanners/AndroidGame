@@ -71,15 +71,18 @@ public class EyeController : MonoBehaviour {
             for (int i = 0; i < targets.Count; ++i)
             {
                 //Get dist between current target
-                float dist = (targets[i].transform.position - transform.position).magnitude;
-
-                //Get dist of current closest target
-                float currentClosestDist = (targets[closest].transform.position - transform.position).magnitude;
-
-                //Check if dist is closer than current closest
-                if (dist < currentClosestDist)
+                if (targets[i] != null && targets[closest] != null)
                 {
-                    closest = i;
+                    float dist = (targets[i].transform.position - transform.position).magnitude;
+
+                    //Get dist of current closest target
+                    float currentClosestDist = (targets[closest].transform.position - transform.position).magnitude;
+
+                    //Check if dist is closer than current closest
+                    if (dist < currentClosestDist)
+                    {
+                        closest = i;
+                    }
                 }
             }
         }

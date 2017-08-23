@@ -15,6 +15,7 @@ public class Eater : MonoBehaviour {
     private int origSortingOrder;
 
     //Components
+    public AudioClip eatSound;
     private AudioSource audioSource;
     private Rigidbody2D rb;
 
@@ -26,10 +27,6 @@ public class Eater : MonoBehaviour {
     //Global vars
     private float growSize;
 
-    //Circle collider
-    public CircleCollider2D circleCollider1;
-
-    
 	// Use this for initialization
 	void Start () {
 
@@ -97,6 +94,7 @@ public class Eater : MonoBehaviour {
 
                     //Play pop audio clip (randomise pitch)
                     audioSource.pitch = UnityEngine.Random.Range(0.5f, 1.5f);
+                    audioSource.clip = eatSound;
                     audioSource.Play();
 
                     //Finish eating

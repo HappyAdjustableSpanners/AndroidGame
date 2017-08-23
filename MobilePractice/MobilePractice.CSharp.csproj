@@ -115,6 +115,7 @@
     <Compile Include="Assets\Scripts\Reusable\Follow.cs" />
     <Compile Include="Assets\Scripts\SpecialEnemyBehaviours\Boostable.cs" />
     <Compile Include="Assets\Scripts\SpecialEnemyBehaviours\Dropper.cs" />
+    <Compile Include="Assets\Squeeker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fonts\luckiest-guy\LICENSE.txt" />

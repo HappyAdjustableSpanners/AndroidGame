@@ -18,6 +18,8 @@ public class PlayerEat : MonoBehaviour {
 
     //Components
     private ScoreManager scoreManager;
+
+    public AudioClip eatSound;
     private AudioSource audioSource;
 
     //A tool to allow debugging, by manually upping the score
@@ -84,6 +86,7 @@ public class PlayerEat : MonoBehaviour {
 
                         //Play pop audio clip (randomise pitch)
                         audioSource.pitch = Random.Range(0.5f, 1.3f);
+                        audioSource.clip = eatSound;
                         audioSource.Play();
 
                         //Finish eating
@@ -209,15 +212,52 @@ public class PlayerEat : MonoBehaviour {
     }
 
 
+    //private void PushThisSpriteAboveOther(Collider2D col)
+    //{
+    //    //Set sorting layer to one above the max 
+    //    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, GetComponent<CircleCollider2D>().radius);
+    //    foreach (Collider2D collider in hitColliders)
+    //    {
+    //        if (collider.tag.Contains("Enemy"))
+    //        {
+    //            GetComponent<Renderer>().sortingOrder = col.gameObject.GetComponent<Renderer>().sortingOrder + 1;
+    //        }
+    //    }
+    //}
+
     private void PushThisSpriteAboveOther(Collider2D col)
     {
         //Set sorting layer to one above the max 
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, GetComponent<CircleCollider2D>().radius);
         foreach (Collider2D collider in hitColliders)
         {
-            if (collider.tag.Contains("Enemy"))
+            if (collider.tag.Contains("Enemy") && !collider.CompareTag("Enemy_Food"))
             {
-                GetComponent<Renderer>().sortingOrder = col.gameObject.GetComponent<Renderer>().sortingOrder + 1;
+                if (collider.transform.Find("RightEye").GetComponent<Renderer>() != null)
+                {
+
+                    if (transform.Find("RightEye").GetComponent<Renderer>() != null)
+                    {
+                        //Get prey sorting order
+                        int colSortingOrder = collider.gameObject.transform.Find("RightEye").GetComponent<Renderer>().sortingOrder;
+
+                        //Set our body sprite sorting order to one above prey 
+                        GetComponent<Renderer>().sortingOrder = colSortingOrder + 1;
+
+                        //Get right eye and left eye renderer
+                        EyeMoveBehaviour[] eyes = GetComponentInChildren<EyeController>().GetEyes();
+                        foreach (EyeMoveBehaviour e in eyes)
+                        {
+                            e.GetComponent<Renderer>().sortingOrder = colSortingOrder + 2;
+                        }
+                        //Renderer rend1 = transform.Find("RightEye").GetComponent<Renderer>();
+                        //Renderer rend2 = transform.Find("LeftEye").GetComponent<Renderer>();
+                        //
+                        ////Set eye sorting orders to 2 above the prey body
+                        //rend1.sortingOrder = colSortingOrder + 2;
+                        //rend2.sortingOrder = colSortingOrder + 2;
+                    }
+                }
             }
         }
     }
