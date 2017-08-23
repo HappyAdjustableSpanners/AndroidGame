@@ -2,58 +2,59 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EyeMoveBehaviour : MonoBehaviour {
+public class EyeController : MonoBehaviour {
 
+    //We want both eyes to have the same trigger, so we detect trigger here and send to both
+
+    //Eyes
+    public EyeMoveBehaviour[] eyes;
+
+    //Index of closest target
     private int closest;
-    public Vector2 xLimits, yLimits;
-    public Vector2 basePos;
 
+    //List of targets
     public List<GameObject> targets;
+    public GameObject prevTarget;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (targets.Count > 0)
-        {
-            //Look at closest object
-            transform.position = Vector3.Lerp(transform.position, targets[closest].transform.position, Time.deltaTime * 0.5f);
-
-            //Clamp position
-            float x = Mathf.Clamp(transform.localPosition.x, xLimits[0], xLimits[1]);
-            float y = Mathf.Clamp(transform.localPosition.y, yLimits[0], yLimits[1]);
-
-            transform.localPosition = new Vector3(x, y, 0f);
-        }
-        else
-            transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(basePos[0], basePos[1], 0), Time.deltaTime * 0.5f);
-    }
-
-    public void OnTrigEnter2D(Collider2D col)
+    void Update()
     {
-        if (col.tag.Contains("Enemy"))
+        //Send target to eyes, if it hasnt changed
+        if (targets.Count > 0 && targets[closest] != null)
+        {
+            if (targets[closest] != prevTarget)
+            {
+                prevTarget = targets[closest];
+                foreach(EyeMoveBehaviour e in eyes)
+                {
+                    e.SetTarget(targets[closest]);
+                }
+            }
+        }
+    }
+    //Send trigger to both eyes
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        //If we see an enemy, add it to our list (if its not already there), then check if we have any closer targets
+        if ((col.tag.Contains("Enemy") || col.tag == "Player") && col.name != this.transform.parent.name)
         {
             if (!targets.Contains(col.gameObject))
             {
                 targets.Add(col.gameObject);
             }
-
             CheckClosestTarget(targets);
         }
     }
 
-    public void OnTrigExit2D(Collider2D col)
+    //Send triggers to both eyes
+    void OnTriggerExit2D(Collider2D col)
     {
-        if (col.tag.Contains("Enemy"))
+        //If we lose sight of an enemy, remove it from our list, then check if we have any closer targets
+        if ((col.tag.Contains("Enemy") || col.tag == "Player") && col.name != this.transform.parent.name)
         {
             if (targets.Contains(col.gameObject))
             {
                 targets.Remove(col.gameObject);
             }
-
             CheckClosestTarget(targets);
         }
     }
@@ -67,7 +68,7 @@ public class EyeMoveBehaviour : MonoBehaviour {
             closest = 0;
 
             //Check if any of remaining objects are closer
-            for(int i = 0; i < targets.Count; ++i)
+            for (int i = 0; i < targets.Count; ++i)
             {
                 //Get dist between current target
                 float dist = (targets[i].transform.position - transform.position).magnitude;
@@ -82,5 +83,10 @@ public class EyeMoveBehaviour : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public EyeMoveBehaviour[] GetEyes()
+    {
+        return eyes;
     }
 }

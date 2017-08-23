@@ -16,6 +16,8 @@ public class EnemyController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+        //Simple state machine. 
+        //Ensures that while eating, the enemy does not wander
         if(state == State.wandering)
         {
             wander.SetWandering(true);

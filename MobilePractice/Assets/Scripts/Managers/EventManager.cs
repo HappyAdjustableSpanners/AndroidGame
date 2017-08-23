@@ -9,19 +9,16 @@ public class EventManager : MonoBehaviour {
     public delegate void PlayerKilled();
     public delegate void StageUp(int currentStage);
     public delegate void orthoSizeChanged(float newOrthoSize);
-    public delegate void finishedInitialZoom();
 
     //Events based on those delegates
     public static event SwipeDetected swipeDetectedMethods;
     public static event PlayerKilled playerKilledMethods;
     public static event StageUp stageUpMethods;
     public static event orthoSizeChanged orthoSizeChangedMethods;
-    public static event finishedInitialZoom finishedInitialZoomMethods;
 
     public static void OnSwipeDetected(int direction)
     {
-        swipeDetectedMethods(direction);
-        
+        swipeDetectedMethods(direction); 
     }
 
     public static void OnPlayerKilled()
@@ -39,20 +36,11 @@ public class EventManager : MonoBehaviour {
         orthoSizeChangedMethods(newOrthoSize);
     }
 
-    public static void OnFinishedInitialZoom()
-    {
-        if (finishedInitialZoomMethods != null)
-        {
-            finishedInitialZoomMethods();
-        }
-    }
-
     public static void ClearAll()
     {
         swipeDetectedMethods = null;
         stageUpMethods = null;
         playerKilledMethods = null;
         orthoSizeChangedMethods = null;
-        finishedInitialZoomMethods = null;
     }
 }

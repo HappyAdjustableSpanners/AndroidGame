@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         {
             nextEnemySliderImg.sprite = Resources.Load<Sprite>("Sprites/enemy_sprite_green");
             objToSpawn = new GameObject[2];
-            objToSpawn[0] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Green");
+            objToSpawn[0] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Red");
             objToSpawn[1] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Yellow");
         }
         else if (currentStage == 3)
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
             nextEnemySliderImg.sprite = Resources.Load<Sprite>("Sprites/enemy_sprite_purple");
             objToSpawn[0] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Red");
             objToSpawn[1] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Yellow");
-            objToSpawn[2] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Green");
+            objToSpawn[2] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Purple");
         }
         else if (currentStage == 4)
         {

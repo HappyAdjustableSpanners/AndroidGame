@@ -26,8 +26,6 @@ public class PlayerMoveJoystick : MonoBehaviour {
 	void Start () {
         rb = GetComponent<Rigidbody2D>();
         cameraBehaviour = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviour>();
-
-        EventManager.finishedInitialZoomMethods += OnInitialZoomFinished;
 	}
 
     // Update is called once per frame
@@ -39,12 +37,14 @@ public class PlayerMoveJoystick : MonoBehaviour {
             dir.x = joystick.Horizontal();
             dir.y = joystick.Vertical();
 
+            //As long as we are touching the joystick
             if (dir != Vector2.zero)
             {
+                //If we are not boosting
                 if (!boosting)
                 {
                     //We want the movement speed to stay the same (relatively) as the player increases in size
-                    moveSpeed = (map.bounds.size.x * speedFactor) / moveFactor;
+                    moveSpeed = (map.bounds.size.x * speedFactor);
                     //Set velocity based on input vector and move speed
                     rb.velocity = dir * Time.deltaTime * moveSpeed;
                 }
@@ -57,8 +57,6 @@ public class PlayerMoveJoystick : MonoBehaviour {
                 }
             }
 
-           
-
             //Look forward
             if (dir != Vector2.zero)
             {
@@ -68,6 +66,7 @@ public class PlayerMoveJoystick : MonoBehaviour {
         }
     }
 
+    //Gets and sets
     public void SetAllowMovement(bool value)
     {
         allowMovement = value;
@@ -87,14 +86,5 @@ public class PlayerMoveJoystick : MonoBehaviour {
     public void SetBoosting(bool value)
     {
         boosting = value;
-    }
-
-    private void OnInitialZoomFinished()
-    {
-        initialZoomDone = true;
-        if (map.bounds.extents.x > 7f)
-        {
-            moveFactor = map.bounds.extents.x / 7f;
-        }
     }
 }

@@ -124,7 +124,7 @@ public class Spawner : MonoBehaviour {
                 obj.name = "Enemy" + spawnIDForeground;
 
                 //Just to neaten up inspector while running, hide all spawned enemies under the GameManager gameObject
-                obj.transform.parent = GameObject.FindGameObjectWithTag("GameManager").transform.Find("ForegroundEnemies").transform;
+                obj.transform.SetParent(GameObject.FindGameObjectWithTag("GameManager").transform.Find("ForegroundEnemies").transform);
 
                 //Increment the spawn id
                 spawnIDForeground++;
@@ -181,7 +181,7 @@ public class Spawner : MonoBehaviour {
                 obj.GetComponent<SpriteRenderer>().color = new Color(255f, 255f, 255f, Random.Range(0.18f, 0.45f));
 
                 //Just to neaten up inspector while running, hide all spawned enemies under the GameManager gameObject
-                obj.transform.parent = GameObject.FindGameObjectWithTag("GameManager").transform.Find("BackgroundEnemies").transform;
+                obj.transform.SetParent(GameObject.FindGameObjectWithTag("GameManager").transform.Find("BackgroundEnemies").transform);
 
                 //Increment the spawn id
                 spawnIDBackground++;
@@ -282,7 +282,7 @@ public class Spawner : MonoBehaviour {
                 obj.name = "Pickup" + spawnIDExtra;
 
                 //Just to neaten up inspector while running, hide all spawned enemies under the GameManager gameObject
-                obj.transform.parent = GameObject.FindGameObjectWithTag("GameManager").transform.Find("Pickups").transform;
+                obj.transform.SetParent(GameObject.FindGameObjectWithTag("GameManager").transform.Find("Pickups").transform);
 
                 //Increment the spawn id
                 spawnIDPickup++;

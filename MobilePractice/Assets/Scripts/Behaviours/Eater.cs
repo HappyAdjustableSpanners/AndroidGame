@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Eater : MonoBehaviour {
 
@@ -24,6 +25,10 @@ public class Eater : MonoBehaviour {
 
     //Global vars
     private float growSize;
+
+    //Circle collider
+    public CircleCollider2D circleCollider1;
+
     
 	// Use this for initialization
 	void Start () {
@@ -55,15 +60,20 @@ public class Eater : MonoBehaviour {
                 return;
             }
 
-            //Move towards the prey at move speed using rb velocity
-            Vector3 normalizeddir = (obj.transform.position - transform.position).normalized;
-            rb.velocity = normalizeddir * Time.deltaTime * wander.GetMoveSpeed();
+            //Only move towards and look at prey if it is at least 1/4 of our size
 
-            //Look at prey while we move towards it
-            Vector3 dir = obj.transform.position - transform.position;
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.AngleAxis(angle - 90, Vector3.forward), Time.deltaTime * wander.GetTurnSpeed() * 10);
+            if( obj.GetComponent<CircleCollider2D>().bounds.size.x / GetComponent<CircleCollider2D>().bounds.size.x > 0.33f)
+            {
+                //Move towards the prey at move speed using rb velocity
+                Vector3 normalizeddir = (obj.transform.position - transform.position).normalized;
+                rb.velocity = normalizeddir * Time.deltaTime * wander.GetMoveSpeed();
 
+                //Look at prey while we move towards it
+                Vector3 dir = obj.transform.position - transform.position;
+                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.AngleAxis(angle - 90, Vector3.forward), Time.deltaTime * wander.GetTurnSpeed() * 10);
+            }
+            
             //If we are fully overlapped, then eat
             if (MathFunctions.IsOverlapping(gameObject.GetComponent<CircleCollider2D>(), obj.GetComponent<CircleCollider2D>(), 0f))
             {
@@ -86,7 +96,7 @@ public class Eater : MonoBehaviour {
                     DestroyObj(obj);
 
                     //Play pop audio clip (randomise pitch)
-                    audioSource.pitch = Random.Range(0.5f, 1.5f);
+                    audioSource.pitch = UnityEngine.Random.Range(0.5f, 1.5f);
                     audioSource.Play();
 
                     //Finish eating
@@ -148,25 +158,25 @@ public class Eater : MonoBehaviour {
 
     private void OnTriggerStay2D(Collider2D col)
     {
-        //If we don't current have prey, and we have collided with prey (or player), and we are not eating
-        if (col.tag.Contains("Enemy") || col.CompareTag("Player") && obj == null && !eating)
-        {
-            //If the prey is valid
-            if (IsValidPrey(col.gameObject))
+            //If we don't current have prey, and we have collided with prey (or player), and we are not eating
+            if (col.tag.Contains("Enemy") || col.CompareTag("Player") && obj == null && !eating)
             {
-                //Set our global prey variable
-                obj = col.gameObject;
+                //If the prey is valid
+                if (IsValidPrey(col.gameObject))
+                {
+                    //Set our global prey variable
+                    obj = col.gameObject;
 
-                //Handle sorting order to ensure this sprite is above the prey sprite
-                PushThisSpriteAboveOther(col);
+                    //Handle sorting order to ensure this sprite is above the prey sprite
+                    PushThisSpriteAboveOther(col);
 
-                //Finally, set eating to true
-                eating = true;
+                    //Finally, set eating to true
+                    eating = true;
 
-                //Set controller state to eating
-                enemyController.SetState("eating");
-            }             
-        }  
+                    //Set controller state to eating
+                    enemyController.SetState("eating");
+                }
+            }
     }
 
     private void OnTriggerExit2D(Collider2D col)
@@ -208,10 +218,34 @@ public class Eater : MonoBehaviour {
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, GetComponent<CircleCollider2D>().radius);
         foreach (Collider2D collider in hitColliders)
         {
-            if (collider.tag.Contains("Enemy"))
+            if (collider.tag.Contains("Enemy") && !collider.CompareTag("Enemy_Food"))
             {
-                GetComponent<Renderer>().sortingOrder = col.gameObject.GetComponent<Renderer>().sortingOrder + 1;
-            }
+                if (collider.transform.Find("RightEye").GetComponent<Renderer>() != null)
+                {
+
+                    if (transform.Find("RightEye").GetComponent<Renderer>() != null)
+                    {
+                        //Get prey sorting order
+                        int colSortingOrder = collider.gameObject.transform.Find("RightEye").GetComponent<Renderer>().sortingOrder;
+
+                        //Set our body sprite sorting order to one above prey 
+                        GetComponent<Renderer>().sortingOrder = colSortingOrder + 1;
+
+                        //Get right eye and left eye renderer
+                        EyeMoveBehaviour[] eyes = GetComponentInChildren<EyeController>().GetEyes();
+                        foreach( EyeMoveBehaviour e in eyes )
+                        {
+                            e.GetComponent<Renderer>().sortingOrder = colSortingOrder + 2;
+                        }
+                        //Renderer rend1 = transform.Find("RightEye").GetComponent<Renderer>();
+                        //Renderer rend2 = transform.Find("LeftEye").GetComponent<Renderer>();
+                        //
+                        ////Set eye sorting orders to 2 above the prey body
+                        //rend1.sortingOrder = colSortingOrder + 2;
+                        //rend2.sortingOrder = colSortingOrder + 2;
+                    }
+                }
+            }     
         }
     }
 
