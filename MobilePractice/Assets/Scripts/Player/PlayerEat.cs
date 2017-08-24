@@ -25,6 +25,9 @@ public class PlayerEat : MonoBehaviour {
     //A tool to allow debugging, by manually upping the score
     public bool upScore = false;
 
+    //Get eyes
+    private EyeMoveBehaviour[] eyes;
+
     // Use this for initialization
     void Start()
     {
@@ -39,6 +42,9 @@ public class PlayerEat : MonoBehaviour {
 
         //Get other player behaviours
         playerMove = GetComponent<PlayerMoveJoystick>();
+
+        //Get eyes
+        eyes = GetComponentInChildren<EyeController>().GetEyes();
     }
 
     // Update is called once per frame
@@ -84,14 +90,14 @@ public class PlayerEat : MonoBehaviour {
                         //Increment score
                         scoreManager.IncrementScore(10);
 
-                        //Play pop audio clip (randomise pitch)
-                        audioSource.pitch = Random.Range(0.5f, 1.3f);
-                        audioSource.clip = eatSound;
-                        audioSource.Play();
-
                         //Finish eating
                         SetFinishedEating();
                     }
+
+                    //Play pop audio clip (randomise pitch)
+                    audioSource.pitch = Random.Range(0.5f, 1.3f);
+                    audioSource.clip = eatSound;
+                    audioSource.Play();
                 }
             }
         }
@@ -109,6 +115,11 @@ public class PlayerEat : MonoBehaviour {
         //Set eating to false, and restore the original sorting order for this sprite
         eating = false;
         GetComponent<Renderer>().sortingOrder = origSortingOrder;
+
+        foreach (EyeMoveBehaviour e in eyes)
+        {
+            e.GetComponent<Renderer>().sortingOrder = origSortingOrder + 1;
+        }
 
         //Set state back to moving
         GetComponent<PlayerController>().setState("moving");
@@ -138,9 +149,9 @@ public class PlayerEat : MonoBehaviour {
     {
         //Reduce speed to 0, wait for 3s, then restore original speed
         float origMoveSpeed = playerMove.GetMoveSpeed();
-        playerMove.SetAllowMovement(false);
+        playerMove.SetSpeedFactor(2f);
         yield return new WaitForSeconds(3f);
-        playerMove.SetAllowMovement(true);
+        playerMove.SetSpeedFactor(5f);
     }
 
     private IEnumerator BoostTimed()
@@ -227,38 +238,37 @@ public class PlayerEat : MonoBehaviour {
 
     private void PushThisSpriteAboveOther(Collider2D col)
     {
+        //Loop through all enemies in overlap circle
+
+        //Find max sorting order of enemies that are larger than this
+
+        int maxSortingOrder = 0;
+
         //Set sorting layer to one above the max 
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, GetComponent<CircleCollider2D>().radius);
         foreach (Collider2D collider in hitColliders)
         {
-            if (collider.tag.Contains("Enemy") && !collider.CompareTag("Enemy_Food"))
+            if (collider.tag.Contains("Enemy") && !collider.CompareTag("Enemy_Food") && !collider.CompareTag("Enemy_Poison"))
             {
                 if (collider.transform.Find("RightEye").GetComponent<Renderer>() != null)
                 {
-
-                    if (transform.Find("RightEye").GetComponent<Renderer>() != null)
+                    //Valid prey
+                    if (collider.GetComponent<Renderer>().sortingOrder > maxSortingOrder)
                     {
-                        //Get prey sorting order
-                        int colSortingOrder = collider.gameObject.transform.Find("RightEye").GetComponent<Renderer>().sortingOrder;
-
-                        //Set our body sprite sorting order to one above prey 
-                        GetComponent<Renderer>().sortingOrder = colSortingOrder + 1;
-
-                        //Get right eye and left eye renderer
-                        EyeMoveBehaviour[] eyes = GetComponentInChildren<EyeController>().GetEyes();
-                        foreach (EyeMoveBehaviour e in eyes)
-                        {
-                            e.GetComponent<Renderer>().sortingOrder = colSortingOrder + 2;
-                        }
-                        //Renderer rend1 = transform.Find("RightEye").GetComponent<Renderer>();
-                        //Renderer rend2 = transform.Find("LeftEye").GetComponent<Renderer>();
-                        //
-                        ////Set eye sorting orders to 2 above the prey body
-                        //rend1.sortingOrder = colSortingOrder + 2;
-                        //rend2.sortingOrder = colSortingOrder + 2;
+                        maxSortingOrder = collider.GetComponent<Renderer>().sortingOrder;
                     }
                 }
             }
+        }
+
+        //Now we have max sorting order
+        //Set our body sprite sorting order to one above prey 
+        GetComponent<Renderer>().sortingOrder = maxSortingOrder + 2;
+
+        //Get eye renderers
+        foreach (EyeMoveBehaviour e in eyes)
+        {
+            e.GetComponent<Renderer>().sortingOrder = maxSortingOrder + 3;
         }
     }
 

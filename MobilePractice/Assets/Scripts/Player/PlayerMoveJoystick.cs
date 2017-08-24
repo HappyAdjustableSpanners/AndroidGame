@@ -78,9 +78,9 @@ public class PlayerMoveJoystick : MonoBehaviour {
         return moveSpeed;
     }
 
-    public void SetMoveSpeed(float value)
+    public void SetSpeedFactor(float value)
     {
-        moveSpeed = value;
+        speedFactor = value;
     }
 
     public void SetBoosting(bool value)

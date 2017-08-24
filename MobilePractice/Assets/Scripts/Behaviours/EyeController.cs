@@ -8,6 +8,7 @@ public class EyeController : MonoBehaviour {
 
     //Eyes
     public EyeMoveBehaviour[] eyes;
+    private BoxCollider2D sightRadius;
 
     //Index of closest target
     private int closest;
@@ -15,6 +16,12 @@ public class EyeController : MonoBehaviour {
     //List of targets
     public List<GameObject> targets;
     public GameObject prevTarget;
+
+    void Start()
+    {
+        sightRadius = GetComponent<BoxCollider2D>();
+        sightRadius.edgeRadius = transform.parent.localScale.x * 42f;
+    }
 
     void Update()
     {
@@ -42,6 +49,9 @@ public class EyeController : MonoBehaviour {
                 targets.Add(col.gameObject);
             }
             CheckClosestTarget(targets);
+
+            //Update sight radius
+            sightRadius.edgeRadius = transform.parent.localScale.x * 20f;
         }
     }
 

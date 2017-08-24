@@ -64,8 +64,9 @@ public class GameManager : MonoBehaviour
         if (currentStage == 1)
         {
             nextEnemySliderImg.sprite = Resources.Load<Sprite>("Sprites/enemy_sprite_yellow");
-            objToSpawn = new GameObject[1];
+            objToSpawn = new GameObject[2];
             objToSpawn[0] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Red");
+            objToSpawn[1] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Blue");
         }
         else if (currentStage == 2)
         {

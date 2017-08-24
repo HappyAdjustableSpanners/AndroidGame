@@ -5,7 +5,7 @@ using UnityEngine;
 public class Boostable : MonoBehaviour {
 
     public float boostFrequency = 10f;
-    public float boostMultiplier = 2f;
+    public float boostMultiplier = 1.7f;
     public float boostDuration = 3f;
 
 	// Use this for initialization
@@ -21,7 +21,10 @@ public class Boostable : MonoBehaviour {
     IEnumerator ActivateSpeedBoost()
     {
         GetComponent<wander>().SetMoveSpeed(GetComponent<wander>().GetMoveSpeed() * boostMultiplier);
+        ParticleSystem.MainModule main = transform.Find("Trail").GetComponent<ParticleSystem>().main;
+        main.startColor = Color.green;
         yield return new WaitForSeconds(boostDuration);
+        main.startColor = Color.black;
         GetComponent<wander>().SetMoveSpeed(GetComponent<wander>().GetMoveSpeed() / boostMultiplier);
     }
 }

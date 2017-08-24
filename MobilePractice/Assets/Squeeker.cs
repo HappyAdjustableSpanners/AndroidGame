@@ -31,6 +31,8 @@ public class Squeeker : MonoBehaviour {
     //Timer to cound between individual sound waves
     private float intervalTimer = 0f;
 
+    public bool playOnAwake = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -39,7 +41,7 @@ public class Squeeker : MonoBehaviour {
         squeekInterval = squeekDuration / numWaves;
 
         //Get as
-        audioSource = GetComponent<AudioSource>();
+        audioSource = transform.Find("Squeeker").GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -49,8 +51,9 @@ public class Squeeker : MonoBehaviour {
         timer += Time.deltaTime % 60f;
 
         //Ready for squeek?
-        if (timer > squeekFrequency)
+        if (timer > squeekFrequency || playOnAwake)
         {
+           
             intervalTimer += Time.deltaTime % 60f;
 
             if (!soundPlayed)
@@ -59,6 +62,7 @@ public class Squeeker : MonoBehaviour {
                 int randomSoundIndex = Random.Range(0, sounds.Length);
                 //Load random clip
                 audioSource.clip = sounds[randomSoundIndex];
+                audioSource.pitch = Random.Range(0.5f, 1.3f);
                 audioSource.PlayDelayed(0.5f);
                 soundPlayed = true;
             }
@@ -83,6 +87,11 @@ public class Squeeker : MonoBehaviour {
                     timer = 0f;
                     currWaves = 0f;
                     soundPlayed = false;
+
+                    if (playOnAwake)
+                    {
+                        playOnAwake = false;
+                    }
                 }
 
                 //Reset interval timer

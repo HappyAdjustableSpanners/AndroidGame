@@ -84,7 +84,7 @@ public class Spawner : MonoBehaviour {
             //Choose random move speed from min and max using player speed as reference. This means as the player scales up things stay consistent
             float playerMoveSpeed = player.GetComponent<PlayerMoveJoystick>().GetMoveSpeed();
             float minMoveSpeed = playerMoveSpeed * 0.2f;
-            float maxMoveSpeed = playerMoveSpeed * 2f;
+            float maxMoveSpeed = playerMoveSpeed * 1.6f;
             float moveSpeed = Random.Range(minMoveSpeed, maxMoveSpeed);
 
             //Choose random scale based on player size

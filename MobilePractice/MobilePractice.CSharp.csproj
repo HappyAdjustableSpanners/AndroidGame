@@ -84,6 +84,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\EyeAnimate.cs" />
     <Compile Include="Assets\Scripts\Behaviours\Eater.cs" />
     <Compile Include="Assets\Scripts\Behaviours\EnemyController.cs" />
     <Compile Include="Assets\Scripts\Behaviours\EyeController.cs" />

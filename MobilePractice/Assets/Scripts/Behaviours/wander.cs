@@ -33,6 +33,10 @@ public class wander : MonoBehaviour {
             Move();
             Turn();
         }
+        else
+        {
+            targetRot = rb.rotation;
+        }
     }
 
     void Move()
