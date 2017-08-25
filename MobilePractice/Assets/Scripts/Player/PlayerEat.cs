@@ -28,6 +28,9 @@ public class PlayerEat : MonoBehaviour {
     //Get eyes
     private EyeMoveBehaviour[] eyes;
 
+    //Global vars
+    private List<GameObject> neighbours = new List<GameObject>();
+
     // Use this for initialization
     void Start()
     {
@@ -174,27 +177,57 @@ public class PlayerEat : MonoBehaviour {
             obj = null;
         }
 
-        //If we don't current have prey, and we have collided with prey, and we are not eating
-        if (col.tag.Contains("Enemy") && obj == null && !eating)
+        //If we have collided with prey
+        if (col.tag.Contains("Enemy"))
         {
             //If the prey is valid
             if(IsValidPrey(col.gameObject))
             {
-                //Set our global prey variable
-                obj = col.gameObject;
+                //If we are not touching any other enemies, return to original sorting order
+                if (neighbours.Count <= 0)
+                {
+                    ResetSortingOrder();
+                }
 
-                //Handle sorting order to ensure this sprite is above the prey sprite
-                PushThisSpriteAboveOther(col);
+                //If our list does not already contain this neighbour, add it
+                if (!neighbours.Contains(col.gameObject))
+                {
+                    neighbours.Add(col.gameObject);
+                }
 
-                //Finally, set eating to true
-                eating = true;
-                GetComponent<PlayerController>().setState("eating");
+                CalculateSortingOrder();
+
+                if (obj == null && !eating)
+                {
+                    //Set our global prey variable
+                    obj = col.gameObject;
+
+                    //Finally, set eating to true
+                    eating = true;
+                    GetComponent<PlayerController>().setState("eating");
+                }
             }           
+        }
+    }
+
+    private void ResetSortingOrder()
+    {
+        //Reset sorting order to our recorded original sorting order
+        GetComponent<Renderer>().sortingOrder = origSortingOrder;
+
+        foreach (EyeMoveBehaviour e in eyes)
+        {
+            e.GetComponent<Renderer>().sortingOrder = origSortingOrder + 1;
         }
     }
 
     private void OnTriggerExit2D(Collider2D col)
     {
+        if (neighbours.Contains(col.gameObject))
+        {
+            neighbours.Remove(col.gameObject);
+        }
+
         //If we have prey, we want to check if it is our prey that has left our trigger
         if (obj != null)
         {
@@ -223,49 +256,35 @@ public class PlayerEat : MonoBehaviour {
     }
 
 
-    //private void PushThisSpriteAboveOther(Collider2D col)
-    //{
-    //    //Set sorting layer to one above the max 
-    //    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, GetComponent<CircleCollider2D>().radius);
-    //    foreach (Collider2D collider in hitColliders)
-    //    {
-    //        if (collider.tag.Contains("Enemy"))
-    //        {
-    //            GetComponent<Renderer>().sortingOrder = col.gameObject.GetComponent<Renderer>().sortingOrder + 1;
-    //        }
-    //    }
-    //}
 
-    private void PushThisSpriteAboveOther(Collider2D col)
+    private void CalculateSortingOrder()
     {
-        //Loop through all enemies in overlap circle
-
-        //Find max sorting order of enemies that are larger than this
-
+        //Keep track of max sorting order
         int maxSortingOrder = 0;
 
-        //Set sorting layer to one above the max 
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, GetComponent<CircleCollider2D>().radius);
-        foreach (Collider2D collider in hitColliders)
+        //Remove any null elements
+        for (int i = 0; i < neighbours.Count; i++)
         {
-            if (collider.tag.Contains("Enemy") && !collider.CompareTag("Enemy_Food") && !collider.CompareTag("Enemy_Poison"))
+            if (neighbours[i] == null)
             {
-                if (collider.transform.Find("RightEye").GetComponent<Renderer>() != null)
-                {
-                    //Valid prey
-                    if (collider.GetComponent<Renderer>().sortingOrder > maxSortingOrder)
-                    {
-                        maxSortingOrder = collider.GetComponent<Renderer>().sortingOrder;
-                    }
-                }
+                neighbours.RemoveAt(i);
             }
         }
 
-        //Now we have max sorting order
-        //Set our body sprite sorting order to one above prey 
+        //Find max sorting order 
+        foreach (GameObject go in neighbours)
+        {
+            //If current sorting order is more than our max sorting order, set it to max
+            if (go.GetComponent<Renderer>().sortingOrder > maxSortingOrder)
+            {
+                maxSortingOrder = go.GetComponent<Renderer>().sortingOrder;
+            }
+        }
+
+        //Set our sorting order to one above the max
         GetComponent<Renderer>().sortingOrder = maxSortingOrder + 2;
 
-        //Get eye renderers
+        //Set sorting order of eyes
         foreach (EyeMoveBehaviour e in eyes)
         {
             e.GetComponent<Renderer>().sortingOrder = maxSortingOrder + 3;

@@ -51,7 +51,7 @@ public class EyeController : MonoBehaviour {
             CheckClosestTarget(targets);
 
             //Update sight radius
-            sightRadius.edgeRadius = transform.parent.localScale.x * 20f;
+            sightRadius.edgeRadius = transform.parent.localScale.x * 10f;
         }
     }
 
