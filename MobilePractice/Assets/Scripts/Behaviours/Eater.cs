@@ -65,19 +65,15 @@ public class Eater : MonoBehaviour {
                 return;
             }
 
-            //Only move towards and look at prey if it is at least 1/4 of our size
+            //Move towards the prey at move speed using rb velocity
+            Vector3 normalizeddir = (obj.transform.position - transform.position).normalized;
+            rb.velocity = normalizeddir * Time.deltaTime * wander.GetMoveSpeed();
 
-            if( PreyIsBigEnough(obj) || !ignoreSmallPrey )
-            {
-                //Move towards the prey at move speed using rb velocity
-                Vector3 normalizeddir = (obj.transform.position - transform.position).normalized;
-                rb.velocity = normalizeddir * Time.deltaTime * wander.GetMoveSpeed();
+            //Look at prey while we move towards it
+            Vector3 dir = obj.transform.position - transform.position;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.AngleAxis(angle - 90, Vector3.forward), Time.deltaTime * wander.GetTurnSpeed() * 10);
 
-                //Look at prey while we move towards it
-                Vector3 dir = obj.transform.position - transform.position;
-                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.AngleAxis(angle - 90, Vector3.forward), Time.deltaTime * wander.GetTurnSpeed() * 10);
-            }
             
             //If we are fully overlapped, then eat
             if (MathFunctions.IsOverlapping(gameObject.GetComponent<CircleCollider2D>(), obj.GetComponent<CircleCollider2D>(), 0f))
@@ -110,14 +106,6 @@ public class Eater : MonoBehaviour {
                 }
             }
         }
-    }
-
-    private bool PreyIsBigEnough(GameObject obj)
-    {
-        if (obj.GetComponent<CircleCollider2D>().bounds.size.x / GetComponent<CircleCollider2D>().bounds.size.x > 0.33f)
-            return true;
-        else
-            return false;
     }
 
     private void SetFinishedEating()
@@ -302,10 +290,16 @@ public class Eater : MonoBehaviour {
         }
     }
 
-
-
     public CircleCollider2D GetCollider2D()
     {
         return GetComponent<CircleCollider2D>();
+    }
+
+    private bool PreyIsBigEnough(GameObject obj)
+    {
+        if (obj.GetComponent<CircleCollider2D>().bounds.size.x / GetComponent<CircleCollider2D>().bounds.size.x > 0.33f)
+            return true;
+        else
+            return false;
     }
 }

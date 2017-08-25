@@ -25,8 +25,8 @@ public class Spawner : MonoBehaviour {
     private GameObject player;
 
     //Spawn circle
-    private CircleCollider2D spawnCircle;
-    private BoxCollider2D spawnBox;
+    public BoxCollider2D spawnBoxEnemies;
+    public BoxCollider2D spawnBoxExtra;
 
     //tags
     private string[] foregroundTags = { "Extra", "Enemy", "Plankton", };
@@ -39,9 +39,7 @@ public class Spawner : MonoBehaviour {
         //Get reference to player
         player = GameObject.FindGameObjectWithTag("Player");
 
-        //Get spawn circle
-        spawnCircle = GetComponent<CircleCollider2D>();
-        spawnBox = GetComponent<BoxCollider2D>();
+        //spawnBox = GetComponent<BoxCollider2D>();
 
         SpawnInitialEnemies();
 
@@ -99,7 +97,7 @@ public class Spawner : MonoBehaviour {
             {
                 //Get spawn pos on circumferance
                 //spawnPos = new Vector2(player.transform.position.x, player.transform.position.y) + Random.insideUnitCircle.normalized * (spawnCircle.radius * transform.parent.localScale.x);
-                spawnPos = MathFunctions.FindRandomPointOnRectanglePerimeter(spawnBox);
+                spawnPos = MathFunctions.FindRandomPointOnRectanglePerimeter(spawnBoxEnemies);
             }
             else
             {
@@ -154,12 +152,12 @@ public class Spawner : MonoBehaviour {
             {
                 //Get spawn pos on circumferance
                 //spawnPos = new Vector2(player.transform.position.x, player.transform.position.y) + Random.insideUnitCircle.normalized * (spawnCircle.radius * transform.parent.localScale.x);
-                spawnPos = MathFunctions.FindRandomPointOnRectanglePerimeter(spawnBox);
+                spawnPos = MathFunctions.FindRandomPointOnRectanglePerimeter(spawnBoxExtra);
             }
             else
             {
                 //Get spawn point in area of circle
-                spawnPos = MathFunctions.FindRandomPointInsideRectangle(spawnBox);
+                spawnPos = MathFunctions.FindRandomPointInsideRectangle(spawnBoxExtra);
                 //size *= 5;
             }
 
@@ -220,7 +218,7 @@ public class Spawner : MonoBehaviour {
             {
                 //Get spawn pos on circumferance
                 //spawnPos = new Vector2(player.transform.position.x, player.transform.position.y) + Random.insideUnitCircle.normalized * (spawnCircle.radius * transform.parent.localScale.x);
-                spawnPos = MathFunctions.FindRandomPointOnRectanglePerimeter(spawnBox);
+                spawnPos = MathFunctions.FindRandomPointOnRectanglePerimeter(spawnBoxExtra);
             }
             else
             {
@@ -271,7 +269,7 @@ public class Spawner : MonoBehaviour {
             Vector2 spawnPos = Vector2.zero;
   
             //Get spawn pos on circumferance
-            spawnPos = MathFunctions.FindRandomPointOnRectanglePerimeter(spawnBox);
+            spawnPos = MathFunctions.FindRandomPointOnRectanglePerimeter(spawnBoxEnemies);
 
             if (NoOverlap(spawnPos, size, true))
             {
@@ -353,5 +351,15 @@ public class Spawner : MonoBehaviour {
         {
             InvokeRepeating("SpawnPickups", pickupSpawnInterval, pickupSpawnInterval);
         }
+    }
+
+    public void SetSpawnRate(float value)
+    {
+        //Updates the spawn rate, cancels the current repeating invokes, then starts them again with the new values
+        spawnInterval = value;
+
+        CancelInvoke();
+
+        StartSpawn();
     }
 }

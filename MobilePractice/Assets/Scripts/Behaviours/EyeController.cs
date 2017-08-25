@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class EyeController : MonoBehaviour {
 
@@ -51,7 +52,16 @@ public class EyeController : MonoBehaviour {
             CheckClosestTarget(targets);
 
             //Update sight radius
-            sightRadius.edgeRadius = transform.parent.localScale.x * 10f;
+            try
+            {
+
+
+                sightRadius.edgeRadius = transform.parent.localScale.x * 10f;
+            }
+            catch(NullReferenceException ex)
+            {
+                Debug.Log("Hello");
+            }
         }
     }
 

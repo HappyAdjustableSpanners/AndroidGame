@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
             nextEnemySliderImg.sprite = Resources.Load<Sprite>("Sprites/enemy_sprite_yellow");
             objToSpawn = new GameObject[1];
             objToSpawn[0] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Red");
+            spawner.SetSpawnRate(0.5f);
         }
         else if (currentStage == 2)
         {
@@ -73,6 +74,7 @@ public class GameManager : MonoBehaviour
             objToSpawn = new GameObject[2];
             objToSpawn[0] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Red");
             objToSpawn[1] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Yellow");
+            spawner.SetSpawnRate(0.4f);
         }
         else if (currentStage == 3)
         {
@@ -81,6 +83,7 @@ public class GameManager : MonoBehaviour
             objToSpawn[0] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Red");
             objToSpawn[1] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Yellow");
             objToSpawn[2] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Purple");
+            spawner.SetSpawnRate(0.3f);
         }
         else if (currentStage == 4)
         {
@@ -89,6 +92,7 @@ public class GameManager : MonoBehaviour
             objToSpawn[1] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Yellow");
             objToSpawn[2] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Blue");
             objToSpawn[3] = Resources.Load<GameObject>("Prefabs/ForegroundEnemies/Enemy_Purple");
+            spawner.SetSpawnRate(0.2f);
         }
 
         //Finally, send the spawner the objects to spawn
