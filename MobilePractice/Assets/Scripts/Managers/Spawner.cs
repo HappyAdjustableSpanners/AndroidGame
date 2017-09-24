@@ -32,6 +32,9 @@ public class Spawner : MonoBehaviour {
     private string[] foregroundTags = { "Extra", "Enemy", "Plankton", };
     private string[] backgroundTags = { "Background" };
 
+    private float minSpawnSpeedFactor = 0f;
+    private float maxSpawnSpeedFactor = 0f;
+
     // Use this for initialization
     void Start()
     {
@@ -81,8 +84,8 @@ public class Spawner : MonoBehaviour {
 
             //Choose random move speed from min and max using player speed as reference. This means as the player scales up things stay consistent
             float playerMoveSpeed = player.GetComponent<PlayerMoveJoystick>().GetMoveSpeed();
-            float minMoveSpeed = playerMoveSpeed * 0.2f;
-            float maxMoveSpeed = playerMoveSpeed * 1.6f;
+            float minMoveSpeed = playerMoveSpeed * minSpawnSpeedFactor;
+            float maxMoveSpeed = playerMoveSpeed * maxSpawnSpeedFactor;
             float moveSpeed = Random.Range(minMoveSpeed, maxMoveSpeed);
 
             //Choose random scale based on player size
@@ -361,5 +364,13 @@ public class Spawner : MonoBehaviour {
         CancelInvoke();
 
         StartSpawn();
+    }
+
+    public void SetSpawnSpeedMultipliers(float min, float max)
+    {
+        minSpawnSpeedFactor = min;
+        maxSpawnSpeedFactor = max;
+
+        Debug.Log("Spawn speed changed to " + minSpawnSpeedFactor + " and " + maxSpawnSpeedFactor);
     }
 }

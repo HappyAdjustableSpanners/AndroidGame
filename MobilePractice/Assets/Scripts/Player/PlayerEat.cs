@@ -6,6 +6,7 @@ public class PlayerEat : MonoBehaviour {
 
     //State
     private bool eating = false;
+    private bool poisoned = false;
 
     //Global reference to our prey obj
     private GameObject obj;
@@ -20,7 +21,7 @@ public class PlayerEat : MonoBehaviour {
     private ScoreManager scoreManager;
 
     public AudioClip eatSound;
-    private AudioSource audioSource;
+    public AudioSource audioSource;
 
     //A tool to allow debugging, by manually upping the score
     public bool upScore = false;
@@ -31,17 +32,20 @@ public class PlayerEat : MonoBehaviour {
     //Global vars
     private List<GameObject> neighbours = new List<GameObject>();
 
+    //Sprite renderer
+    private SpriteRenderer sr;
+
     // Use this for initialization
     void Start()
     {
+        //Get sr
+        sr = GetComponent<SpriteRenderer>();
+
         //Get original renderer sorting order ( we need this to push the eater above other sprites)
         origSortingOrder = GetComponent<Renderer>().sortingOrder;
 
         //Get score manager (we need this to up the score when the player eats)
         scoreManager = GameObject.FindGameObjectWithTag("ScoreManager").GetComponent<ScoreManager>();
-
-        //Get audio source (for eat sound)
-        audioSource = GetComponent<AudioSource>();
 
         //Get other player behaviours
         playerMove = GetComponent<PlayerMoveJoystick>();
@@ -53,6 +57,15 @@ public class PlayerEat : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if(poisoned)
+        {
+            sr.color = Color.Lerp(sr.color, Color.magenta, Time.deltaTime);
+        }
+        else if( !Color.Equals(sr.color, Color.white) )
+        {
+            sr.color = Color.Lerp(sr.color, Color.white, Time.deltaTime);
+        }
+
         if (eating)
         {
             //If the obj is null, or it is now bigger than we are, stop eating and return
@@ -67,9 +80,13 @@ public class PlayerEat : MonoBehaviour {
             //Vector3.MoveTowards would solve this, as it does not speed-up/slow-down. However, it does not look smooth. 
             //The solution I came to is that the predator will lerp smoothly to within a certain proximity, and then finish off by 'MoveTowards' meaning it will fully reach its goal whilst stil looking quite smooth
             if (MathFunctions.IsOverlapping(gameObject.GetComponent<CircleCollider2D>(), obj.GetComponent<CircleCollider2D>(), 0.2f))
-            {     
-                //We are close, so to finish, MoveTowards       
-                transform.position = Vector3.MoveTowards(transform.position, obj.transform.position, Time.deltaTime * 3f);
+            {
+                //Only do this if we are facing target to within 90 degrees
+                if (Vector3.Angle(transform.up, obj.transform.position - transform.position) < 45)
+                {
+                    //We are close, so to finish, MoveTowards       
+                    transform.position = Vector3.MoveTowards(transform.position, obj.transform.position, Time.deltaTime * 3f);
+                }
 
                 //If we are fully overlapped, then eat
                 if (MathFunctions.IsOverlapping(gameObject.GetComponent<CircleCollider2D>(), obj.GetComponent<CircleCollider2D>(), 0))
@@ -82,7 +99,14 @@ public class PlayerEat : MonoBehaviour {
                     }
                     else if(obj.tag.Contains("Food"))
                     {
+                        //if we are already boosting
+                        if (playerMove.GetBoosting() == true)
+                        {
+                            StopCoroutine("BoostTimed");
+                        }
+
                         StartCoroutine("BoostTimed");
+                        scoreManager.IncrementScore(2);
                         Destroy(obj);
                     }
                     else
@@ -98,7 +122,7 @@ public class PlayerEat : MonoBehaviour {
                     }
 
                     //Play pop audio clip (randomise pitch)
-                    audioSource.pitch = Random.Range(0.5f, 1.3f);
+                    audioSource.pitch = UnityEngine.Random.Range(0.5f, 1.5f);
                     audioSource.clip = eatSound;
                     audioSource.Play();
                 }
@@ -150,16 +174,27 @@ public class PlayerEat : MonoBehaviour {
 
     private IEnumerator FreezeTimed()
     {
+        //Disable eyes
+        transform.Find("RightEye").transform.gameObject.SetActive(false);
+        transform.Find("LeftEye").transform.gameObject.SetActive(false);
+        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/player_sprite_dead");
+        poisoned = true;
+
         //Reduce speed to 0, wait for 3s, then restore original speed
         float origMoveSpeed = playerMove.GetMoveSpeed();
         playerMove.SetSpeedFactor(2f);
         yield return new WaitForSeconds(3f);
         playerMove.SetSpeedFactor(5f);
+
+        transform.Find("RightEye").transform.gameObject.SetActive(true);
+        transform.Find("LeftEye").transform.gameObject.SetActive(true);
+        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/player_sprite_alive");
+        transform.Find("poison_radial_countdown").transform.gameObject.SetActive(false);
+        poisoned = false;
     }
 
     private IEnumerator BoostTimed()
     {
-        //Boost to x2 speed for x seconds, then return to orig speed
         float origMoveSpeed = playerMove.GetMoveSpeed();
         playerMove.SetBoosting(true);
         ParticleSystem.MainModule main = transform.Find("Trail").GetComponent<ParticleSystem>().main;

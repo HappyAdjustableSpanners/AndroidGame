@@ -42,6 +42,19 @@ public class Squeeker : MonoBehaviour {
 
         //Get as
         audioSource = transform.Find("Squeeker").GetComponent<AudioSource>();
+
+        //Add Audio Reverb and echo filters
+        AudioReverbFilter reverbFilter = gameObject.AddComponent<AudioReverbFilter>();
+        AudioEchoFilter echoFilter = gameObject.AddComponent<AudioEchoFilter>();
+        if (reverbFilter != null && echoFilter != null)
+        {
+            reverbFilter.reverbPreset = AudioReverbPreset.Drugged;
+
+            echoFilter.delay = 300;
+            echoFilter.decayRatio = 0.1f;
+            echoFilter.wetMix = 0.3f;
+            echoFilter.dryMix = 0.5f;
+        }
 	}
 	
 	// Update is called once per frame
@@ -62,7 +75,7 @@ public class Squeeker : MonoBehaviour {
                 int randomSoundIndex = Random.Range(0, sounds.Length);
                 //Load random clip
                 audioSource.clip = sounds[randomSoundIndex];
-                audioSource.pitch = Random.Range(0.5f, 1.3f);
+                audioSource.pitch = Random.Range(0.6f, 0.75f);
                 audioSource.PlayDelayed(0.5f);
                 soundPlayed = true;
             }

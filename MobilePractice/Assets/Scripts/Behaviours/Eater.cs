@@ -16,7 +16,7 @@ public class Eater : MonoBehaviour {
 
     //Components
     public AudioClip eatSound;
-    private AudioSource audioSource;
+    public AudioSource audioSource;
     private Rigidbody2D rb;
 
     //Other behaviours
@@ -30,16 +30,11 @@ public class Eater : MonoBehaviour {
     //Global vars
     private List<GameObject> neighbours = new List<GameObject>();
 
-    public bool ignoreSmallPrey = true;
-
 	// Use this for initialization
 	void Start () {
 
         //Get original renderer sorting order ( we need this to push the eater above other sprites)
         origSortingOrder = GetComponent<Renderer>().sortingOrder;
-
-        //Get audio source (for eat sound)
-        audioSource = GetComponent<AudioSource>();
 
         //Get rigidbody (for movement)
         rb = GetComponent<Rigidbody2D>();
@@ -53,21 +48,35 @@ public class Eater : MonoBehaviour {
         eyes = GetComponentInChildren<EyeController>().GetEyes();
     }
 
+    private bool isBigger(GameObject obj)
+    {
+        if (obj.GetComponent<CircleCollider2D>().bounds.size.x > GetComponent<CircleCollider2D>().bounds.size.x || obj.GetComponent<CircleCollider2D>().bounds.size.x == GetComponent<CircleCollider2D>().bounds.size.x)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
         if (eating)
         {
             //If the obj is null, or it is now bigger than we are, set the obj to null (we no longer chase it)
-            if (obj == null || obj.GetComponent<CircleCollider2D>().bounds.size.x > GetComponent<CircleCollider2D>().bounds.size.x || obj.GetComponent<CircleCollider2D>().bounds.size.x == GetComponent<CircleCollider2D>().bounds.size.x)
+            if (obj == null || isBigger(obj))
             {
                 SetFinishedEating();
                 return;
             }
 
-            //Move towards the prey at move speed using rb velocity
-            Vector3 normalizeddir = (obj.transform.position - transform.position).normalized;
-            rb.velocity = normalizeddir * Time.deltaTime * wander.GetMoveSpeed();
+            //Only do this if we are facing target to within 90 degrees
+            if (Vector3.Angle(transform.up, obj.transform.position - transform.position) < 45)
+            {
+                //Move towards the prey at move speed using rb velocity
+                Vector3 normalizeddir = (obj.transform.position - transform.position).normalized;
+                rb.velocity = normalizeddir * Time.deltaTime * wander.GetMoveSpeed();
+            }
 
             //Look at prey while we move towards it
             Vector3 dir = obj.transform.position - transform.position;
@@ -159,7 +168,7 @@ public class Eater : MonoBehaviour {
     {
         //Reduce speed to 0, wait for 3s, then restore original speed
         float origMoveSpeed = wander.GetMoveSpeed();
-        wander.SetMoveSpeed(0f);
+        wander.SetMoveSpeed(origMoveSpeed / 2);
         yield return new WaitForSeconds(3f);
         wander.SetMoveSpeed(origMoveSpeed);
     }

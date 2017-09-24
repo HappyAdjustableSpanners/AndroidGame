@@ -87,4 +87,9 @@ public class PlayerMoveJoystick : MonoBehaviour {
     {
         boosting = value;
     }
+
+    public bool GetBoosting()
+    {
+        return boosting;
+    }
 }
